@@ -25,10 +25,21 @@ nav {
     margin: 0;
 }
 
+.profil-container {
+    display: flex;
+    align-items: flex-start; 
+    gap: 10px;
+}
+
+.profil-container strong {
+    margin-top: 15px; 
+}
+
 .profil-img {
     width: 40px; 
     height: 40px; 
     border-radius: 50%;
+    cursor: pointer;
 }
 
 .navbar p {
@@ -73,4 +84,13 @@ nav {
 
 .navbar button:hover {
     background-color: #5a754e;
+}
+
+.meniu-dropdown strong{
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.meniu-dropdown button{
+    margin-top: 5px;
 }

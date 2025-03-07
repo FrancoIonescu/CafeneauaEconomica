@@ -1,0 +1,57 @@
+const Utilizator = require('./utilizator');
+const Postare = require('./postare');
+const Comentariu = require('./comentariu');
+const Apreciere = require('./apreciere');
+const Categorie = require('./categorie');
+const Notificare = require('./notificare');
+const Sanctiune = require('./sanctiune');
+const Thread = require('./thread');
+
+// Asocieri Utilizator
+Utilizator.hasMany(Postare, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'postari' });
+Utilizator.hasMany(Comentariu, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'comentarii' });
+Utilizator.hasMany(Apreciere, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'aprecieri' });
+Utilizator.hasMany(Notificare, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'notificari' });
+Utilizator.hasMany(Sanctiune, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'sanctiuni' });
+Utilizator.hasMany(Thread, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'threaduri' });
+
+// Asocieri Postare
+Postare.belongsTo(Utilizator, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'utilizator'});
+Postare.belongsTo(Categorie, { foreignKey: 'id_categorie', onDelete: 'CASCADE', as: 'categorie'});
+Postare.hasMany(Comentariu, { foreignKey: 'id_postare', onDelete: 'CASCADE', as: 'comentarii' });
+Postare.hasMany(Apreciere, { foreignKey: 'id_postare', onDelete: 'CASCADE', as: 'aprecieri' });
+
+// Asocieri Comentariu
+Comentariu.belongsTo(Utilizator, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'utilizator' });
+Comentariu.belongsTo(Postare, { foreignKey: 'id_postare', onDelete: 'CASCADE', as: 'postare' });
+Comentariu.hasMany(Apreciere, { foreignKey: 'id_comentariu', onDelete: 'CASCADE', as: 'aprecieri' });
+
+// Asocieri Apreciere
+Apreciere.belongsTo(Utilizator, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'utilizator' });
+Apreciere.belongsTo(Postare, { foreignKey: 'id_postare', onDelete: 'CASCADE', allowNull: true, as: 'postare' });
+Apreciere.belongsTo(Comentariu, { foreignKey: 'id_comentariu', onDelete: 'CASCADE', allowNull: true, as: 'comentariu' });
+
+// Asocieri Categorie
+Categorie.hasMany(Postare, { foreignKey: 'id_categorie', onDelete: 'CASCADE', as: 'postari' });
+Categorie.hasMany(Thread, { foreignKey: 'id_categorie', onDelete: 'CASCADE', as: 'threaduri' });
+
+// Asocieri Notificare
+Notificare.belongsTo(Utilizator, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'utilizator' });
+
+// Asocieri Sanctiune
+Sanctiune.belongsTo(Utilizator, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'utilizator' });
+
+// Asocieri Thread
+Thread.belongsTo(Utilizator, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'utilizator' });
+Thread.belongsTo(Categorie, { foreignKey: 'id_categorie', onDelete: 'CASCADE', as: 'categorie' });
+
+module.exports = {
+    Utilizator,
+    Postare,
+    Comentariu,
+    Apreciere,
+    Categorie,
+    Notificare,
+    Sanctiune,
+    Thread
+};

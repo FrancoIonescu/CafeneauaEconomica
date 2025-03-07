@@ -1,7 +1,10 @@
 const express = require('express');
 const sequelize = require('./db');
+const Sequelize = require('sequelize');
 const Utilizator = require('./models/utilizator'); 
 const Postare = require('./models/postare');
+const Apreciere = require('./models/apreciere');
+const Asocieri = require('./models/asocieri')
 const session = require('express-session'); 
 const cors = require('cors');
 require('dotenv').config();
@@ -68,7 +71,9 @@ app.get('/sesiune', (req, res) => {
             imagineBase64 = `data:image/jpeg;base64,${buffer.toString('base64')}`;
         }
         
-        res.json({ nume_utilizator: req.session.nume_utilizator, 
+        res.json({ 
+                   id_utilizator: req.session.utilizatorId,
+                   nume_utilizator: req.session.nume_utilizator, 
                    email: req.session.email, 
                    este_moderator: req.session.este_moderator,
                    imagine_profil: imagineBase64
@@ -113,14 +118,42 @@ app.post('/inregistrare', async (req, res) => {
 });
 
 app.get('/postari', async (req, res) => {
-    const pagina = parseInt(req.query.pagina) || 1; 
-    const postariPePagina = 5;  
+    const pagina = parseInt(req.query.pagina) || 1;
+    const postariPePagina = 5;
+    const utilizatorId = req.session.utilizatorId;
 
     try {
         const postari = await Postare.findAll({
             limit: postariPePagina,
-            offset: (pagina - 1) * postariPePagina
+            offset: (pagina - 1) * postariPePagina,
+            include: [
+                {
+                    model: Apreciere,
+                    attributes: [],
+                    as: 'aprecieri'
+                }
+            ],
+            attributes: {
+                include: [
+                    [Sequelize.fn("COUNT", Sequelize.col("aprecieri.id_apreciere")), "numarAprecieri"],
+                    [Sequelize.literal(`(
+                        SELECT GROUP_CONCAT(id_utilizator) 
+                        FROM aprecieri 
+                        WHERE aprecieri.id_postare = postare.id_postare
+                    )`), "idUtilizatoriAprecieri"],
+                    [Sequelize.literal(`(
+                        SELECT COUNT(*) > 0 
+                        FROM aprecieri 
+                        WHERE aprecieri.id_postare = postare.id_postare 
+                        AND aprecieri.id_utilizator = ${utilizatorId || 0}
+                    )`), "userHasLiked"]
+                ]
+            },
+            group: ["postare.id_postare"],
+            order: [['id_postare', 'DESC']],
+            subQuery: false
         });
+
         const totalPostari = await Postare.count();
 
         res.json({ postari, totalPostari });
@@ -134,7 +167,7 @@ app.get('/profil', async (req, res) => {
     if (!req.session || !req.session.utilizatorId) {
         return res.status(401).json({ mesaj: 'Utilizator neautentificat' });
     }
-
+    
     try {
         const utilizator = await Utilizator.findOne({
             where: { id_utilizator: req.session.utilizatorId },  
@@ -149,6 +182,29 @@ app.get('/profil', async (req, res) => {
     } catch (error) {
         console.error('Eroare la obținerea profilului:', error);
         res.status(500).json({ mesaj: 'Eroare de server' });
+    }
+});
+
+app.post('/aprecieri', async (req, res) => {
+    const { id_utilizator, id_postare } = req.body;
+
+    try {
+        if (!id_utilizator || !id_postare) {
+            return res.status(400).json({ message: "Lipsesc parametrii necesari" });
+        }
+
+        const apreciereExistenta = await Apreciere.findOne({ where: { id_utilizator, id_postare } });
+
+        if (apreciereExistenta) {
+            await apreciereExistenta.destroy();
+            return res.json({ message: "Apreciere eliminată", liked: false });
+        } else {
+            await Apreciere.create({ id_utilizator, id_postare, data_apreciere: new Date() });
+            return res.json({ message: "Postare apreciată", liked: true });
+        }
+    } catch (err) {
+        console.error("Eroare la gestionarea aprecierii:", err);
+        res.status(500).json({ message: "Eroare la server" });
     }
 });
 

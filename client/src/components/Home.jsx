@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import './styles/Home.css';
 import { useAuth } from "./AuthContext";
 
@@ -10,29 +10,41 @@ const Home = () => {
     const totalPagini = Math.ceil(totalPostari / 5);
     const API_URL = import.meta.env.VITE_API_URL;
 
-    useEffect(() => {
-        const fetchPostari = async () => {
-            try {
-                const raspuns = await fetch(`${API_URL}/postari?pagina=${paginaCurenta}`);
-                const date = await raspuns.json();
-                setPostari(date.postari);
-                setTotalPostari(date.totalPostari);
-            } catch (err) {
-                console.error("Eroare la obținerea postărilor:", err);
-            }
-        };
+    const fetchPostari = useCallback(async () => {
+        try {
+            const raspuns = await fetch(`${API_URL}/postari?pagina=${paginaCurenta}`, {
+                credentials: "include"
+            });
+            const date = await raspuns.json();
 
-        fetchPostari();
+            setPostari(date.postari);
+            setTotalPostari(date.totalPostari);
+        } catch (err) {
+            console.error("Eroare la obținerea postărilor:", err);
+        }
     }, [paginaCurenta]);
 
-    const handleLike = (id_postare) => {
-        // Poți actualiza logica pentru a trimite un "like" la backend
-        console.log(`Postarea ${id_postare} a primit un like!`);
-    };
+    useEffect(() => {
+        fetchPostari();
+    }, [fetchPostari, user]);
 
-    const handleComment = (id_postare) => {
-        // Poți deschide o fereastră modală pentru comentarii
-        console.log(`Comentarii pentru postarea ${id_postare}`);
+    const handleLike = async (id_postare) => {
+        if (!user) {
+            alert("Trebuie să fii autentificat pentru a aprecia o postare.");
+            return;
+        }
+
+        try {
+            await fetch(`${API_URL}/aprecieri`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id_utilizator: user.id_utilizator, id_postare }),
+            });
+
+            fetchPostari();
+        } catch (err) {
+            console.error("Eroare la aprecierea postării:", err);
+        }
     };
 
     return (
@@ -46,16 +58,17 @@ const Home = () => {
                             <p className="data-creare">Creată la: {new Date(postare.data_creare).toLocaleString()}</p>
                         </div>
                         <div className="postare-actions">
-                            <button className="like-btn" onClick={() => handleLike(postare.id_postare)}>
-                                Îmi place
+                            <button 
+                                className={`like-btn ${postare.userHasLiked ? "liked" : ""}`} 
+                                onClick={() => handleLike(postare.id_postare)}
+                            >
+                                {postare.userHasLiked ? "Apreciat" : "Îmi place"}
                             </button>
-                            <button className="comment-btn" onClick={() => handleComment(postare.id_postare)}>
-                                Commentarii
-                            </button>
+                            <button>Comentarii</button>
                         </div>
                         <div className="postare-stats">
-                            <p><strong>Aprecieri:</strong> 0</p>  {/* Poți actualiza acest număr */}
-                            <p><strong>Comentarii:</strong> 0</p>  {/* Poți actualiza acest număr */}
+                            <p><strong>Aprecieri:</strong> {postare.numarAprecieri}</p>
+                            <p><strong>Comentarii:</strong> 0 </p>
                         </div>
                     </div>
                 ))}

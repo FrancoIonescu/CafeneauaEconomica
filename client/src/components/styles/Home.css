@@ -61,28 +61,9 @@
     background-color: #5a754e;
 }
 
-.like-btn {
-    background-color: #e74c3c;
-}
-
-.like-btn:hover {
-    background-color: #c0392b;
-}
-
-.comment-btn {
-    background-color: #2ecc71;
-}
-
-.comment-btn:hover {
-    background-color: #27ae60;
-}
-
-.share-btn {
-    background-color: #f39c12;
-}
-
-.share-btn:hover {
-    background-color: #e67e22;
+.like-btn.liked {
+    background-color: #5a754e;
+    color: white;
 }
 
 .postare-stats {
