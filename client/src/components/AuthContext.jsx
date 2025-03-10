@@ -10,13 +10,13 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const verificaSesiunea = async () => {
             try {
-                const response = await fetch(`${API_URL}/sesiune`, {
+                const raspuns = await fetch(`${API_URL}/sesiune`, {
                     method: "GET",
                     credentials: "include",
                 });
 
-                if (response.ok) {
-                    const data = await response.json();
+                if (raspuns.ok) {
+                    const data = await raspuns.json();
                     setUser(data);
                 }
             } catch (error) {
@@ -30,16 +30,16 @@ export const AuthProvider = ({ children }) => {
 
     const register = async (nume_utilizator, email, parola, data_nastere) => {
         try {
-            const response = await fetch(`${API_URL}/inregistrare`, {
+            const raspuns = await fetch(`${API_URL}/inregistrare`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ nume_utilizator, email, parola, data_nastere }),
                 credentials: "include",
             });
     
-            const data = await response.json(); 
+            const data = await raspuns.json(); 
 
-            if (!response.ok) {
+            if (!raspuns.ok) {
                 throw new Error(data.message || "Înregistrarea a eșuat. Verificați datele introduse.");
             }
 
@@ -53,16 +53,16 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, parola) => {
         try {
-            const response = await fetch(`${API_URL}/conectare`, {
+            const raspuns = await fetch(`${API_URL}/conectare`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, parola }),
                 credentials: "include",
             });
 
-            const data = await response.json();
+            const data = await raspuns.json();
 
-            if (!response.ok) {
+            if (!raspuns.ok) {
                 throw new Error(data.message || "Conectarea a eșuat. Verificați datele introduse.");
             }
 

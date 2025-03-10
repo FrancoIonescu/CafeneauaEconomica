@@ -3,7 +3,9 @@ const sequelize = require('./db');
 const Sequelize = require('sequelize');
 const Utilizator = require('./models/utilizator'); 
 const Postare = require('./models/postare');
+const Categorie = require('./models/categorie');
 const Apreciere = require('./models/apreciere');
+const Comentariu = require('./models/comentariu');
 const Asocieri = require('./models/asocieri')
 const session = require('express-session'); 
 const cors = require('cors');
@@ -117,51 +119,31 @@ app.post('/inregistrare', async (req, res) => {
     }
 });
 
-app.get('/postari', async (req, res) => {
-    const pagina = parseInt(req.query.pagina) || 1;
-    const postariPePagina = 5;
-    const utilizatorId = req.session.utilizatorId;
-
+app.get('/utilizatori', async (req, res) => {
     try {
-        const postari = await Postare.findAll({
-            limit: postariPePagina,
-            offset: (pagina - 1) * postariPePagina,
+        const utilizatori = await Utilizator.findAll({
+            attributes: ['id_utilizator', 'nume_utilizator', 'email', 'este_moderator'],
+            order: [['id_utilizator', 'ASC']],
             include: [
                 {
-                    model: Apreciere,
-                    attributes: [],
-                    as: 'aprecieri'
+                    model: Postare,
+                    as: 'postari',
+                    attributes: ['id_postare']
+                },
+                {
+                    model: Comentariu,
+                    as: 'comentarii',
+                    attributes: ['id_comentariu']
                 }
-            ],
-            attributes: {
-                include: [
-                    [Sequelize.fn("COUNT", Sequelize.col("aprecieri.id_apreciere")), "numarAprecieri"],
-                    [Sequelize.literal(`(
-                        SELECT GROUP_CONCAT(id_utilizator) 
-                        FROM aprecieri 
-                        WHERE aprecieri.id_postare = postare.id_postare
-                    )`), "idUtilizatoriAprecieri"],
-                    [Sequelize.literal(`(
-                        SELECT COUNT(*) > 0 
-                        FROM aprecieri 
-                        WHERE aprecieri.id_postare = postare.id_postare 
-                        AND aprecieri.id_utilizator = ${utilizatorId || 0}
-                    )`), "userHasLiked"]
-                ]
-            },
-            group: ["postare.id_postare"],
-            order: [['id_postare', 'DESC']],
-            subQuery: false
-        });
-
-        const totalPostari = await Postare.count();
-
-        res.json({ postari, totalPostari });
-    } catch (err) {
-        console.error('Eroare la obținerea postărilor:', err);
+            ]
+        })
+        res.json(utilizatori);
+    }
+    catch (err) {
+        console.error('Eroare la obținerea utilizatorilor:', err);
         res.status(500).json({ message: 'Eroare la server' });
     }
-});
+})
 
 app.get('/profil', async (req, res) => {
     if (!req.session || !req.session.utilizatorId) {
@@ -185,25 +167,140 @@ app.get('/profil', async (req, res) => {
     }
 });
 
-app.post('/aprecieri', async (req, res) => {
-    const { id_utilizator, id_postare } = req.body;
+app.get('/postari', async (req, res) => {
+    const pagina = parseInt(req.query.pagina) || 1;
+    const postariPePagina = 5;
+    const utilizatorId = req.session.utilizatorId || 0;
 
     try {
-        if (!id_utilizator || !id_postare) {
+        const postari = await Postare.findAll({
+            limit: postariPePagina,
+            offset: (pagina - 1) * postariPePagina,
+            order: [['id_postare', 'DESC']],
+            include: [
+                {
+                    model: Comentariu,
+                    as: 'comentarii',
+                    attributes: [
+                        'id_comentariu',
+                        'continut',
+                        'data_postarii',
+                        'id_utilizator',
+                        [Sequelize.literal(`(SELECT COUNT(*) FROM Aprecieri WHERE Aprecieri.id_comentariu = comentarii.id_comentariu)`), 'numarAprecieri'],
+                        [Sequelize.literal(`(SELECT SUM(CASE WHEN id_utilizator = ${utilizatorId} THEN 1 ELSE 0 END) FROM Aprecieri WHERE Aprecieri.id_comentariu = comentarii.id_comentariu AND Aprecieri.id_utilizator = ${utilizatorId})`), 'esteApreciat']
+                    ],
+                    include: {
+                        model: Utilizator,
+                        as: 'utilizator',
+                        attributes: ['nume_utilizator']
+                    }
+                },
+                {
+                    model: Apreciere,
+                    as: 'aprecieri',
+                    attributes: [],
+                    required: false
+                }
+            ],
+            attributes: [
+                'id_postare',
+                'continut',
+                'data_creare',
+                'id_utilizator',
+                [Sequelize.literal(`(SELECT COUNT(*) FROM Aprecieri WHERE Aprecieri.id_postare = Postare.id_postare)`), 'numarAprecieri'],
+                [Sequelize.literal(`(SELECT SUM(CASE WHEN id_utilizator = ${utilizatorId} THEN 1 ELSE 0 END) FROM Aprecieri WHERE Aprecieri.id_postare = Postare.id_postare AND Aprecieri.id_utilizator = ${utilizatorId})`), 'esteApreciat']
+            ]
+        });
+
+        const totalPostari = await Postare.count();
+        res.json({ postari, totalPostari });
+    } catch (err) {
+        console.error('Eroare la obținerea postărilor:', err);
+        res.status(500).json({ message: 'Eroare la server' });
+    }
+});
+
+app.get('/categorii', async (req, res) => {
+    try {
+        const categorii = await Categorie.findAll({
+            attributes: ['id_categorie', 'nume_categorie'],
+            
+        });
+        res.json(categorii);
+    } catch (err) {
+        console.error('Eroare la obținerea categoriilor:', err);
+        res.status(500).json({ message: 'Eroare la server' });
+    }
+});
+
+app.post('/postari', async (req, res) => {
+    const { continut, id_categorie } = req.body;
+    const id_utilizator = req.session.utilizatorId;
+
+    try {
+        if (!continut || !id_categorie || !id_utilizator) {
+            return res.status(400).json({ message: 'Lipsesc parametrii necesari' });
+        }
+
+        const postareNoua = await Postare.create({
+            continut,
+            id_categorie,
+            id_utilizator
+        });
+
+        res.status(201).json({ message: 'Postare adăugată cu succes', postare: postareNoua });
+    } catch (err) {
+        console.error('Eroare la adăugarea postării:', err);
+        res.status(500).json({ message: 'Eroare la server' });
+    }
+});    
+
+app.post('/aprecieri', async (req, res) => {
+    const { id_utilizator, id_postare, id_comentariu } = req.body;
+
+    try {
+        if (!id_utilizator || (!id_postare && !id_comentariu)) {
             return res.status(400).json({ message: "Lipsesc parametrii necesari" });
         }
 
-        const apreciereExistenta = await Apreciere.findOne({ where: { id_utilizator, id_postare } });
+        const conditie = id_postare ? { id_utilizator, id_postare } : { id_utilizator, id_comentariu };
+
+        const apreciereExistenta = await Apreciere.findOne({ where: conditie });
 
         if (apreciereExistenta) {
             await apreciereExistenta.destroy();
             return res.json({ message: "Apreciere eliminată", liked: false });
         } else {
-            await Apreciere.create({ id_utilizator, id_postare, data_apreciere: new Date() });
-            return res.json({ message: "Postare apreciată", liked: true });
+            await Apreciere.create({ 
+                id_utilizator, 
+                id_postare: id_postare || null, 
+                id_comentariu: id_comentariu || null, 
+            });
+            return res.json({ message: "Apreciere adăugată", liked: true });
         }
     } catch (err) {
         console.error("Eroare la gestionarea aprecierii:", err);
+        res.status(500).json({ message: "Eroare la server" });
+    }
+});
+
+app.post('/comentarii', async (req, res) => {
+    const { continut, id_utilizator, id_postare } = req.body;
+
+    try {
+        if (!continut || !id_utilizator || !id_postare) {
+            return res.status(400).json({ message: "Lipsesc parametrii necesari" });
+        }
+
+        const comentariuNou = await Comentariu.create({
+            continut,
+            id_utilizator,
+            id_postare
+        });
+
+        res.status(201).json({ message: "Comentariu adăugat cu succes", comentariu: comentariuNou });
+    } catch (err) {
+        console.error("Eroare la adăugarea comentariului:", err);
         res.status(500).json({ message: "Eroare la server" });
     }
 });

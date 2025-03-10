@@ -1,4 +1,4 @@
-.home-container {
+.home {
     max-width: 900px;
     margin: 0 auto;
     padding: 20px;
@@ -6,7 +6,7 @@
     margin-top: 100px;
 }
 
-.home-container h1 {
+.home h1 {
     text-align: center;
     color: #2c3e50;
     margin-bottom: 20px;
@@ -19,6 +19,7 @@
 .postare {
     background-color: #fff;
     padding: 15px;
+    margin-top: 10px;
     margin-bottom: 20px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
@@ -44,7 +45,7 @@
     margin-top: 15px;
 }
 
-.postare-actions button {
+.postari-feed button {
     padding: 10px 15px;
     background-color: #7c9a6d;
     color: #fff;
@@ -57,7 +58,7 @@
     gap: 5px;
 }
 
-.postare-actions button:hover {
+.postari-feed button:hover {
     background-color: #5a754e;
 }
 
@@ -66,20 +67,98 @@
     color: white;
 }
 
-.postare-stats {
+.postare-stats, .comentariu-stats {
     margin-top: 10px;
     font-size: 0.9em;
     color: #7f8c8d;
 }
 
-.pagination {
+.comentarii {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-left: 4px solid #7c9a6d;
+    border-radius: 5px;
+}
+
+.comentariu {
+    padding: 8px;
+    background-color: #ffffff;
+    margin-top: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.comentariu-data {
+    text-align: right;
+}
+
+.comentarii-hidden {
+    display: none;
+}
+
+.comentarii button {
+    padding: 10px 15px;
+    margin-top: 10px;
+    background-color: #7c9a6d;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.comentarii button:hover {
+    background-color: #5a754e;
+}
+
+.adauga-comentariu {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+.adauga-comentariu input[type="text"] {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+}
+
+.adauga-comentariu button {
+    padding: 10px 15px;
+    background-color: #7c9a6d;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.adauga-comentariu button:hover {
+    background-color: #5a754e;
+}
+
+.comentarii-container {
+    margin-top: 15px;
+}
+
+.paginare {
     display: flex;
     justify-content: center;
     gap: 10px;
     margin-top: 20px;
 }
 
-.pagination button {
+.paginare button {
     padding: 10px 20px;
     background-color: #7c9a6d;
     color: #fff;
@@ -89,11 +168,11 @@
     font-size: 16px;
 }
 
-.pagination button:hover {
+.paginare button:hover {
     background-color: #5a754e;
 }
 
-.pagination button:disabled {
+.paginare button:disabled {
     background-color: #bdc3c7;
     cursor: not-allowed;
 }

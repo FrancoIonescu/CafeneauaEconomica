@@ -1,16 +1,20 @@
 import React, { useState, useEffect, useCallback } from "react";
 import './styles/Home.css';
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 
 const Home = () => {
     const [postari, setPostari] = useState([]);
     const [totalPostari, setTotalPostari] = useState(0);
     const [paginaCurenta, setPaginaCurenta] = useState(1);
+    const [comentariiVizibile, setComentariiVizibile] = useState(null);
+    const [comentariuNou, setComentariuNou] = useState("");
     const { user } = useAuth();
+    const navigate = useNavigate();
     const totalPagini = Math.ceil(totalPostari / 5);
     const API_URL = import.meta.env.VITE_API_URL;
 
-    const fetchPostari = useCallback(async () => {
+    const afisarePostari = useCallback(async () => {
         try {
             const raspuns = await fetch(`${API_URL}/postari?pagina=${paginaCurenta}`, {
                 credentials: "include"
@@ -25,55 +29,144 @@ const Home = () => {
     }, [paginaCurenta]);
 
     useEffect(() => {
-        fetchPostari();
-    }, [fetchPostari, user]);
+        afisarePostari();
+    }, [afisarePostari, user]);
 
-    const handleLike = async (id_postare) => {
+    const trimiteApreciere = async (id_postare, id_comentariu = null) => {
         if (!user) {
-            alert("Trebuie să fii autentificat pentru a aprecia o postare.");
+            navigate("/login");
             return;
         }
 
         try {
-            await fetch(`${API_URL}/aprecieri`, {
+            const raspuns = await fetch(`${API_URL}/aprecieri`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ id_utilizator: user.id_utilizator, id_postare }),
+                body: JSON.stringify({ 
+                    id_utilizator: user.id_utilizator, 
+                    id_postare: id_comentariu ? null : id_postare, 
+                    id_comentariu: id_comentariu || null 
+                }),
             });
 
-            fetchPostari();
+            const data = await raspuns.json();
+
+            afisarePostari();
         } catch (err) {
-            console.error("Eroare la aprecierea postării:", err);
+            console.error("Eroare la apreciere:", err);
         }
     };
 
+    const trimiteComentariu = async (id_postare) => {
+        if (!user) {
+            navigate("/login");
+            return;
+        }
+
+        if (!comentariuNou.trim()) {
+            return;
+        }
+    
+        try {
+            const raspuns = await fetch(`${API_URL}/comentarii`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    continut: comentariuNou,
+                    id_utilizator: user.id_utilizator, 
+                    id_postare: id_postare,
+                }),
+            });
+    
+            if (raspuns.ok) {
+                const comentariuAdaugat = await raspuns.json();
+                console.log("Comentariu adăugat:", comentariuAdaugat);
+    
+                setComentariuNou("");
+                afisarePostari();
+            } else {
+                console.error("Eroare la adăugarea comentariului:", raspuns.statusText);
+            }
+        } catch (err) {
+            console.error("Eroare la trimiterea comentariului:", err);
+        }
+    };
+
+    const afisareComentarii = (id_postare) => {
+        setComentariiVizibile(prev => (prev === id_postare ? null : id_postare));
+    };
+
     return (
-        <div className="home-container">
+        <div className="home">
             <h1>Postări</h1>
             <div className="postari-feed">
+                <button 
+                    className="postari-feed"
+                    onClick={() => navigate("/postare-noua")}
+                >
+                    Postare nouă
+                </button>
                 {postari.map(postare => (
                     <div className="postare" key={postare.id_postare}>
-                        <div className="postare-header">
-                            <h2>{postare.continut}</h2>
-                            <p className="data-creare">Creată la: {new Date(postare.data_creare).toLocaleString()}</p>
+                        <div className="postare-header">  
+                            <h2>{postare.continut}</h2>  
+                            <p className="data-creare">Creată la: {new Date(postare.data_creare).toLocaleString()}</p>  
                         </div>
                         <div className="postare-actions">
-                            <button 
-                                className={`like-btn ${postare.userHasLiked ? "liked" : ""}`} 
-                                onClick={() => handleLike(postare.id_postare)}
+                            <button
+                                className={`like-btn ${postare.esteApreciat ? "liked" : ""}`}
+                                onClick={() => trimiteApreciere(postare.id_postare)}
                             >
-                                {postare.userHasLiked ? "Apreciat" : "Îmi place"}
+                                {postare.esteApreciat ? "Apreciat" : "Îmi place"}
                             </button>
-                            <button>Comentarii</button>
+                            <button onClick={() => afisareComentarii(postare.id_postare)}>
+                                {comentariiVizibile === postare.id_postare ? "Ascunde comentarii" : "Afișează comentarii"}
+                            </button>
                         </div>
                         <div className="postare-stats">
                             <p><strong>Aprecieri:</strong> {postare.numarAprecieri}</p>
-                            <p><strong>Comentarii:</strong> 0 </p>
+                            <p><strong>Comentarii:</strong> {postare.comentarii ? postare.comentarii.length : 0}</p>
                         </div>
+                        {comentariiVizibile === postare.id_postare && (
+                            <div className="comentarii-container">
+                                {postare.comentarii && postare.comentarii.length > 0 && (
+                                    <div className="comentarii">
+                                    {postare.comentarii.map(comentariu => (
+                                        <div className="comentariu" key={comentariu.id_comentariu}>
+                                            <p>
+                                                <strong>{comentariu.utilizator.nume_utilizator}</strong>: {comentariu.continut}
+                                            </p>
+                                            <button
+                                                className={`like-btn ${comentariu.esteApreciat ? "liked" : ""}`}
+                                                onClick={() => trimiteApreciere(postare.id_postare, comentariu.id_comentariu)}
+                                            >
+                                                {comentariu.esteApreciat ? "Apreciat" : "Îmi place"}
+                                            </button>
+                                            <div className="comentariu-stats">
+                                                <p><strong>Aprecieri:</strong> {comentariu.numarAprecieri}</p>
+                                                <p className="comentariu-data">{new Date(comentariu.data_postarii).toLocaleString()}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                )}
+                                <div className="adauga-comentariu">
+                                    <input
+                                        type="text"
+                                        placeholder="Adaugă un comentariu..."
+                                        value={comentariuNou}
+                                        onChange={(e) => setComentariuNou(e.target.value)}
+                                    />
+                                    <button onClick={() => trimiteComentariu(postare.id_postare)}>Trimite</button>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 ))}
             </div>
-            <div className="pagination">
+            <div className="paginare">
                 <button onClick={() => setPaginaCurenta(paginaCurenta - 1)} disabled={paginaCurenta === 1}>
                     Pagina anterioară
                 </button>
