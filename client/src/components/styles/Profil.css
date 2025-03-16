@@ -1,4 +1,5 @@
 .profil {
+    font-family: "Poppins", sans-serif;
     max-width: 400px;
     margin: 100px auto;
     padding: 20px;
@@ -8,17 +9,23 @@
     text-align: center;
 }
 
+.profil-imagine {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
 .profil h2 {
-    color: #333;
+    color: #914F1E;
     margin-bottom: 15px;
 }
 
-.profil p {
-    font-size: 16px;
-    color: #555;
-    margin: 10px 0;
+.profil strong {
+    color: #914F1E;
 }
 
-.profil strong {
-    color: #222;
+.profil p {
+    font-size: 1.1em;
+    color: #5a754e;
+    margin: 10px 0;
 }

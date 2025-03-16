@@ -27,25 +27,28 @@ const Login = () => {
     };
 
     return (
-        <div className="login">
-            <form id="login-form" onSubmit={handleSubmit}>
-                <input 
-                    type="email" 
-                    placeholder="email" 
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required 
-                />
-                <input 
-                    type="password" 
-                    placeholder="parolă" 
-                    value={parola}
-                    onChange={(e) => setParola(e.target.value)}
-                    required 
-                />
-                <button type="submit">Login</button>
-                <span>Nu aveți cont? <a href="/register">Sign Up</a></span>
-            </form>        
+        <div>
+            <h2 className="titlu">Conectare</h2>
+            <div className="login">
+                <form id="login-form" onSubmit={handleSubmit}>
+                    <input 
+                        type="email" 
+                        placeholder="email" 
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required 
+                    />
+                    <input 
+                        type="password" 
+                        placeholder="parolă" 
+                        value={parola}
+                        onChange={(e) => setParola(e.target.value)}
+                        required 
+                    />
+                    <button type="submit">Login</button>
+                    <span>Nu aveți cont? <a href="/register">Sign Up</a></span>
+                </form>        
+            </div>
         </div>
     );
 };

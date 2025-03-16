@@ -56,30 +56,32 @@ const PostareNoua = () => {
     };
 
     return (
-        <div className="postare-noua">
-            <h2>Postare nouă</h2>
-            <form id="postare-form" onSubmit={trimitePostare}>
-                <textarea
-                    placeholder="Conținut"
-                    value={continut}
-                    onChange={(e) => setContinut(e.target.value)}
-                    required
-                    rows="3" 
-                />
-                <select
-                    value={categorieSelectata}
-                    onChange={(e) => setCategorieSelectata(e.target.value)}
-                    required
-                >
-                    <option value="">Selectează o categorie</option>
-                    {categorii.map((categorie) => (
-                        <option key={categorie.id_categorie} value={categorie.id_categorie}>
-                            {categorie.nume_categorie}
-                        </option>
-                    ))}
-                </select>
-                <button type="submit">Trimite</button>
-            </form>
+        <div>
+            <h2 className="titlu">Postare nouă</h2>
+            <div className="postare-noua">
+                <form id="postare-form" onSubmit={trimitePostare}>
+                    <textarea
+                        placeholder="Conținut"
+                        value={continut}
+                        onChange={(e) => setContinut(e.target.value)}
+                        required
+                        rows="3" 
+                    />
+                    <select
+                        value={categorieSelectata}
+                        onChange={(e) => setCategorieSelectata(e.target.value)}
+                        required
+                    >
+                        <option value="">Selectează o categorie</option>
+                        {categorii.map((categorie) => (
+                            <option key={categorie.id_categorie} value={categorie.id_categorie}>
+                                {categorie.nume_categorie}
+                            </option>
+                        ))}
+                    </select>
+                    <button type="submit">Trimite</button>
+                </form>
+            </div>
         </div>
     );
 };

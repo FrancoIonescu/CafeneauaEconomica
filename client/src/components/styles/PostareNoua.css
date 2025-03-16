@@ -2,7 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    margin-top: 10px;
 }
 
 #postare-form {
@@ -17,6 +17,7 @@
 }
 
 #postare-form input, #postare-form select, #postare-form textarea {
+    font-family: "Poppins", sans-serif;
     width: 100%;
     padding: 12px;
     margin: 10px 0;
@@ -42,6 +43,7 @@
     border: none;
     padding: 12px;
     border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     font-size: 16px;
     cursor: pointer;
     margin-top: 10px;
@@ -53,6 +55,16 @@
 }
 
 .postare-noua h2 {
-    margin-bottom: 20px;
     color: #333;
+}
+
+.titlu {
+    color: #914F1E;
+    font-size: 30px;
+    font-weight: bold;
+    text-shadow: 0px 2px 3px rgba(0, 0, 0, 0.2);
+    margin-bottom: 10px;
+    margin: 150px auto 0 auto; 
+    text-align: center;
+    width: fit-content;
 }

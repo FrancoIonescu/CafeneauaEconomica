@@ -1,13 +1,16 @@
 import React, { useState, useEffect, useCallback } from "react";
 import './styles/Home.css';
 import { useNavigate } from "react-router-dom";
+import imagineProfilDefault from "./images/profile_photo.jpg";
 import { useAuth } from "./AuthContext";
 
 const Home = () => {
     const [postari, setPostari] = useState([]);
     const [totalPostari, setTotalPostari] = useState(0);
     const [paginaCurenta, setPaginaCurenta] = useState(1);
+    const [categorii, setCategorii] = useState([]);
     const [comentariiVizibile, setComentariiVizibile] = useState(null);
+    const [baraVizibila, setBaraVizibila] = useState(true);
     const [comentariuNou, setComentariuNou] = useState("");
     const { user } = useAuth();
     const navigate = useNavigate();
@@ -29,8 +32,22 @@ const Home = () => {
     }, [paginaCurenta]);
 
     useEffect(() => {
+        const afisareCategorii = async () => {
+            try {
+                const raspuns = await fetch(`${API_URL}/categorii`);
+                const date = await raspuns.json();
+                setCategorii([{ id_categorie: 0, nume_categorie: "Toate" }, ...date]);
+            } catch (err) {
+                console.error("Eroare la obținerea categoriilor:", err);
+            }
+        };
+        afisareCategorii();
         afisarePostari();
     }, [afisarePostari, user]);
+
+    const vizibilitateBaraCategorii = () => {
+        setBaraVizibila(!baraVizibila);
+    };
 
     const trimiteApreciere = async (id_postare, id_comentariu = null) => {
         if (!user) {
@@ -98,9 +115,30 @@ const Home = () => {
         setComentariiVizibile(prev => (prev === id_postare ? null : id_postare));
     };
 
+    const convertToBase64 = (arrayBuffer) => {
+        if (!arrayBuffer) return null;
+        const uint8Array = new Uint8Array(arrayBuffer);
+        const stringChar = uint8Array.reduce((data, byte) => data + String.fromCharCode(byte), '');
+        return `data:image/jpeg;base64,${btoa(stringChar)}`;
+    };
+
     return (
         <div className="home">
             <h1>Postări</h1>
+            <div className="bara-categorii">
+                <button className="buton-vizibilitate-categorii" onClick={vizibilitateBaraCategorii}>
+                    {baraVizibila ? 'Ascunde categorii' : 'Afișează Categorii'}
+                </button>
+            </div>
+            {baraVizibila && (
+                <div className="lista-categorii">
+                {categorii.map((categorie, index) => (
+                    <div key={index} className="categorie">
+                        {categorie.nume_categorie}
+                    </div>
+                ))}
+            </div>
+            )}
             <div className="postari-feed">
                 <button 
                     className="postari-feed"
@@ -111,7 +149,15 @@ const Home = () => {
                 {postari.map(postare => (
                     <div className="postare" key={postare.id_postare}>
                         <div className="postare-header">  
-                            <h2>{postare.continut}</h2>  
+                            <img 
+                                src={postare.utilizator.imagine_profil 
+                                    ? convertToBase64(postare.utilizator.imagine_profil.data) 
+                                    : imagineProfilDefault} 
+                                alt="Profil" 
+                                className="profil-img"
+                            />
+                            <strong>{postare.utilizator.nume_utilizator}</strong>
+                            <h2>{postare.continut}</h2>
                             <p className="data-creare">Creată la: {new Date(postare.data_creare).toLocaleString()}</p>  
                         </div>
                         <div className="postare-actions">
@@ -135,9 +181,17 @@ const Home = () => {
                                     <div className="comentarii">
                                     {postare.comentarii.map(comentariu => (
                                         <div className="comentariu" key={comentariu.id_comentariu}>
-                                            <p>
-                                                <strong>{comentariu.utilizator.nume_utilizator}</strong>: {comentariu.continut}
-                                            </p>
+                                            <img 
+                                                src={comentariu.utilizator.imagine_profil 
+                                                    ? convertToBase64(comentariu.utilizator.imagine_profil.data) 
+                                                    : imagineProfilDefault} 
+                                                alt="Profil" 
+                                                className="profil-img"
+                                            />
+                                            <strong className="nume-utilizator">
+                                                {comentariu.utilizator.nume_utilizator}
+                                            </strong>
+                                            <p className="continut-comentariu">{comentariu.continut}</p>
                                             <button
                                                 className={`like-btn ${comentariu.esteApreciat ? "liked" : ""}`}
                                                 onClick={() => trimiteApreciere(postare.id_postare, comentariu.id_comentariu)}

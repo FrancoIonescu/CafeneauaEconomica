@@ -153,7 +153,7 @@ app.get('/profil', async (req, res) => {
     try {
         const utilizator = await Utilizator.findOne({
             where: { id_utilizator: req.session.utilizatorId },  
-            attributes: ['nume_utilizator', 'email']
+            attributes: ['nume_utilizator', 'email', 'imagine_profil']
         });
 
         if (!utilizator) {
@@ -179,6 +179,11 @@ app.get('/postari', async (req, res) => {
             order: [['id_postare', 'DESC']],
             include: [
                 {
+                    model: Utilizator,
+                    as: 'utilizator',
+                    attributes: ['nume_utilizator', 'imagine_profil']
+                },
+                {
                     model: Comentariu,
                     as: 'comentarii',
                     attributes: [
@@ -192,7 +197,7 @@ app.get('/postari', async (req, res) => {
                     include: {
                         model: Utilizator,
                         as: 'utilizator',
-                        attributes: ['nume_utilizator']
+                        attributes: ['nume_utilizator', 'imagine_profil']
                     }
                 },
                 {

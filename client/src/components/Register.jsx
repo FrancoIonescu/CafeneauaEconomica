@@ -29,38 +29,41 @@ const Register = () => {
     };
 
     return (
-        <div className="register">
-            <form id="register-form" onSubmit={handleSubmit}>
-            <input 
-                    type="text" 
-                    placeholder="nume utilizator" 
-                    value={numeUtilizator}
-                    onChange={(e) => setNumeUtilizator(e.target.value)}
-                    required 
-                />
-                <input 
-                    type="email" 
-                    placeholder="email" 
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required 
-                />
-                <input 
-                    type="password" 
-                    placeholder="parolă" 
-                    value={parola}
-                    onChange={(e) => setParola(e.target.value)}
-                    required 
-                />
-                <input 
-                    type="date" 
-                    value={dataNastere}
-                    onChange={(e) => setDataNastere(e.target.value)}
-                    required
-                />
-                <button type="submit">Sign Up</button>
-                <span>Ai deja cont? <a href="/login">Login</a></span>
-            </form>        
+        <div>
+            <h2 className="titlu">Înregistrare</h2>
+            <div className="register">
+                <form id="register-form" onSubmit={handleSubmit}>
+                    <input 
+                        type="text" 
+                        placeholder="nume utilizator" 
+                        value={numeUtilizator}
+                        onChange={(e) => setNumeUtilizator(e.target.value)}
+                        required 
+                    />
+                    <input 
+                        type="email" 
+                        placeholder="email" 
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required 
+                    />
+                    <input 
+                        type="password" 
+                        placeholder="parolă" 
+                        value={parola}
+                        onChange={(e) => setParola(e.target.value)}
+                        required 
+                    />
+                    <input 
+                        type="date" 
+                        value={dataNastere}
+                        onChange={(e) => setDataNastere(e.target.value)}
+                        required
+                    />
+                    <button type="submit">Sign Up</button>
+                    <span>Ai deja cont? <a href="/login">Login</a></span>
+                </form>        
+            </div>
         </div>
     );
 };

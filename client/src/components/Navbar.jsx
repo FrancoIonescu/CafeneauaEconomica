@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import "./styles/Navbar.css";
 import { useNavigate } from "react-router-dom";
 import imagineProfilDefault from "./images/profile_photo.jpg";
+import coffeeCup from '../../public/coffee-cup.svg'
 import { useAuth } from "./AuthContext";
 
 const Navbar = () => {
@@ -20,7 +21,15 @@ const Navbar = () => {
     return (
         <nav>
             <div className="navbar">
-                <h1>Cafeneaua Economica</h1>
+                <div className="brand">
+                    <img 
+                        src={coffeeCup} 
+                        alt="Coffee Cup" 
+                        className="logo" 
+                        onClick={() => navigate("/")}
+                    />
+                    <h1 onClick={() => navigate("/")}>Cafeneaua Economica</h1>
+                </div>
                 <div className="login-container">
                     {user ? (
                         <div className="profil-container">
@@ -39,7 +48,7 @@ const Navbar = () => {
                             )}
                         </div>
                     ) : (
-                        <div>
+                        <div className="login-buttons">
                             <button onClick={() => navigate("/login")}>Login</button>
                             <button onClick={() => navigate('/register')}>Sign Up</button>
                         </div>
@@ -48,6 +57,7 @@ const Navbar = () => {
             </div>
         </nav>
     );
+    
 };
 
 export default Navbar;

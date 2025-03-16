@@ -2,7 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    margin-top: 10px;
 }
 
 #register-form {
@@ -17,6 +17,7 @@
 }
 
 #register-form input {
+    font-family: "Poppins", sans-serif;
     width: 100%;
     padding: 12px;
     margin: 10px 0;
@@ -32,11 +33,13 @@
 }
 
 #register-form button {
+    font-family: "Poppins", sans-serif;
     background-color: #7c9a6d;
     color: white;
     border: none;
     padding: 12px;
     border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     font-size: 16px;
     cursor: pointer;
     margin-top: 10px;
@@ -48,10 +51,22 @@
 }
 
 .register span {
+    font-family: "Poppins", sans-serif;
     padding-top: 50px;
-    padding-right: 120px;
+    padding-right: 130px;
 }
 
 .register a {
     color: #338d06;
+}
+
+.titlu {
+    color: #914F1E;
+    font-size: 30px;
+    font-weight: bold;
+    text-shadow: 0px 2px 3px rgba(0, 0, 0, 0.2);
+    margin-bottom: 10px;
+    margin: 150px auto 0 auto; 
+    text-align: center;
+    width: fit-content;
 }
