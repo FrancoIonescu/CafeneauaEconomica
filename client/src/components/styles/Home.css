@@ -8,12 +8,66 @@
 .home h1 {
     font-family: "Spicy Rice", serif;
     font-weight: 400;
-    font-style: normal;
     font-size: 30px;
     text-shadow: 0px 2px 3px rgba(0, 0, 0, 0.2);
     text-align: center;
     color: #914F1E;
     margin-bottom: 20px;
+}
+
+.home button {
+    font-family: "Poppins", sans-serif;
+    background-color: #7c9a6d;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+}
+
+.home button:hover {
+    background-color: #5a754e;
+}
+
+.lista-categorii {
+    font-family: "Poppins", sans-serif;
+    font-weight: 100;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 240px;
+    height: 100vh;
+    background-color: #7c9a6d;
+    padding: 125px 15px 0 10px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.categorie {
+    padding: 10px;
+    margin: 0 5px 5px 0;
+    background-color: #F7DCB9;
+    color: #914F1E;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.categorie.selectata {
+    background-color: #d1b296;
+}
+
+.categorie:hover {
+    background-color: #d1b296;
+}
+
+.bara-categorii button {
+    left: 35px;
+    position: fixed;
+    top: 87px;
+    border: none;
+    padding: 5px 10px;
+    font-size: 15px;
+    z-index: 1;
 }
 
 .postari-feed {
@@ -24,31 +78,28 @@
     font-family: "Poppins", sans-serif;
     background-color: #F7DCB9;
     padding: 15px;
-    margin-top: 10px;
-    margin-bottom: 20px;
+    margin: 10px 0 20px 0;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
     border-radius: 8px;
 }
 
-.postare-header {
-    margin-bottom: 15px;
+.continut-autor {
+    display: flex;
+    align-items: center;
+}
+
+.continut-autor strong {
+    margin-left: 10px;
+    font-size: 1.1em;
+    color: #5a754e;
 }
 
 .postare-header h2 {
     font-size: 1.2em;
     color: #914F1E;
-    font-style: bold;
 }
 
-.postare-header strong {
-    position: absolute;
-    margin-left: 10px;
-    margin-top: 5px;
-    font-size: 1.1em;
-    color: #5a754e;
-}
-
-.data-creare {
+.postare-header p {
     font-size: 0.9em;
     color: #5a754e;
 }
@@ -60,30 +111,15 @@
 }
 
 .postari-feed button {
-    font-family: "Poppins", sans-serif;
     padding: 10px 15px;
-    background-color: #7c9a6d;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
     font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.postari-feed button:hover {
-    background-color: #5a754e;
 }
 
 .like-btn.liked {
     background-color: #5a754e;
-    color: white;
 }
 
-.postare-stats, .comentariu-stats {
+.postare-stats {
     margin-top: 10px;
     font-size: 0.9em;
     color: #914F1E;
@@ -113,20 +149,21 @@
     cursor: pointer;
 }
 
-.nume-utilizator {
-    position: absolute;
-    margin-left: 10px;
-    margin-top: 5px;
-    color: #5a754e;
-}
-
 .continut-comentariu {
     color: #914F1E;
-    font-weight: 600;
+    font-weight: bold;
+}
+
+.comentariu-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-size: 0.9em;
+    color: #914F1E;
 }
 
 .comentariu-data {
-    text-align: right;
+    color: #5a754e;
 }
 
 .comentarii-hidden {
@@ -136,19 +173,10 @@
 .comentarii button {
     padding: 10px 15px;
     margin-top: 10px;
-    background-color: #7c9a6d;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
     font-size: 14px;
     display: flex;
     align-items: center;
     gap: 5px;
-}
-
-.comentarii button:hover {
-    background-color: #5a754e;
 }
 
 .adauga-comentariu {
@@ -168,24 +196,6 @@
     outline: none;
 }
 
-.adauga-comentariu button {
-    padding: 10px 15px;
-    background-color: #7c9a6d;
-    color: #fff;
-    border: none;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.adauga-comentariu button:hover {
-    background-color: #5a754e;
-}
-
 .comentarii-container {
     margin-top: 15px;
 }
@@ -199,74 +209,10 @@
 
 .paginare button {
     padding: 10px 20px;
-    background-color: #7c9a6d;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
     font-size: 16px;
-}
-
-.paginare button:hover {
-    background-color: #5a754e;
 }
 
 .paginare button:disabled {
     background-color: #bdc3c7;
     cursor: not-allowed;
-}
-
-.lista-categorii {
-    font-family: "Poppins", sans-serif;
-    font-weight: 100;
-    font-style: normal;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 240px;
-    height: 100vh;
-    background-color: #7c9a6d;
-    padding-top: 125px; 
-    padding-left: 10px;
-    padding-right: 15px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
-    display: flex;
-    flex-direction: column;
-    z-index: 1;
-}
-
-.categorie {
-    padding: 10px;
-    margin-bottom: 5px;
-    margin-right: 5px;
-    background-color: #F7DCB9;
-    color: #914F1E;
-    font-weight: bold;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-.categorie:hover {
-    background-color: #d1b296;
-}
-
-.buton-vizibilitate-categorii {
-    left: 30px;
-    position: fixed;
-    top: 87px;
-    border: none;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    padding: 5px 10px;
-    background-color: #7c9a6d;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    color: white;
-    z-index: 2;
-}
-
-.buton-vizibilitate-categorii:hover {
-    background-color: #5a754e;
 }

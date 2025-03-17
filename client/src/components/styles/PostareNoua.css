@@ -5,9 +5,22 @@
     margin-top: 10px;
 }
 
+.titlu {
+    font-family: "Spicy Rice", serif;
+    font-style: normal;
+    color: #914F1E;
+    font-size: 30px;
+    text-shadow: 0px 2px 3px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin: 150px auto 0 auto; 
+    text-align: center;
+    width: fit-content;
+}
+
 #postare-form {
     background: #F7DCB9;
-    padding: 2rem;
+    padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     display: flex;
@@ -29,7 +42,7 @@
 }
 
 #postare-form input:focus, #postare-form select:focus, #postare-form textarea:focus {
-    border: 1px solid #1e3c72;
+    border: 1px solid #914F1E;
     outline: none;
 }
 
@@ -37,7 +50,7 @@
     resize: vertical;
 }
 
-#postare-form button[type="submit"] {
+#postare-form button {
     background-color: #7c9a6d;
     color: white;
     border: none;
@@ -47,24 +60,8 @@
     font-size: 16px;
     cursor: pointer;
     margin-top: 10px;
-    transition: background 0.3s;
 }
 
-#postare-form button[type="submit"]:hover {
+#postare-form button:hover {
     background-color: #5a754e;
-}
-
-.postare-noua h2 {
-    color: #333;
-}
-
-.titlu {
-    color: #914F1E;
-    font-size: 30px;
-    font-weight: bold;
-    text-shadow: 0px 2px 3px rgba(0, 0, 0, 0.2);
-    margin-bottom: 10px;
-    margin: 150px auto 0 auto; 
-    text-align: center;
-    width: fit-content;
 }

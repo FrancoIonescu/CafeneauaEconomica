@@ -171,9 +171,11 @@ app.get('/postari', async (req, res) => {
     const pagina = parseInt(req.query.pagina) || 1;
     const postariPePagina = 5;
     const utilizatorId = req.session.utilizatorId || 0;
+    const categorieId = req.query.id_categorie || null;
 
     try {
         const postari = await Postare.findAll({
+            where: categorieId != 0 ? { id_categorie: categorieId } : {},
             limit: postariPePagina,
             offset: (pagina - 1) * postariPePagina,
             order: [['id_postare', 'DESC']],
@@ -217,7 +219,10 @@ app.get('/postari', async (req, res) => {
             ]
         });
 
-        const totalPostari = await Postare.count();
+        const totalPostari = await Postare.count({ 
+            where: categorieId != 0 ? { id_categorie: categorieId } : {}
+        });
+
         res.json({ postari, totalPostari });
     } catch (err) {
         console.error('Eroare la obținerea postărilor:', err);
