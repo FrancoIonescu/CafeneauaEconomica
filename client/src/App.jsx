@@ -7,6 +7,8 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Profil from "./components/Profil"; 
 import PostareNoua from "./components/PostareNoua";
+import Footer from "./components/Footer";
+import PageNotFound from './components/PageNotFound';
 
 const App = () => {
     return (
@@ -14,11 +16,12 @@ const App = () => {
             <Router>
                 <Navbar />
                 <Routes>
-                    <Route path="/" element={<Home />} />
+                    <Route path="/" element={<> <Home /> <Footer /> </>} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/profil" element={<Profil />} />
                     <Route path="/postare-noua" element={<PostareNoua />} />
+                    <Route path="*" element={<PageNotFound />} />
                 </Routes>
             </Router>
         </AuthProvider>

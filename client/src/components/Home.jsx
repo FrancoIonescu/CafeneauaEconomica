@@ -138,9 +138,9 @@ const Home = () => {
             </div>
             {baraVizibila && (
                 <div className="lista-categorii">
-                    {categorii.map((categorie, index) => (
+                    {categorii.map(categorie => (
                         <div 
-                            key={index} 
+                            key={categorie.id_categorie} 
                             className={`categorie ${categorie.id_categorie === categorieSelectata ? 'selectata' : ''}`}
                             onClick={() => selecteazaCategorie(categorie.id_categorie)}>
                             {categorie.nume_categorie}

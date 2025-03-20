@@ -1,0 +1,37 @@
+.not-found-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 200px;
+    text-align: center;
+    background-color: #B5C18E;
+}
+
+.not-found-page h1 {
+    font-size: 3em;
+    color: #914F1E;
+    margin-bottom: 20px;
+}
+
+.not-found-page p {
+    font-size: 1.2em;
+    color: #914F1E;
+    margin-bottom: 15px;
+}
+
+.not-found-page a {
+    color: #914F1E;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.not-found-page a:hover {
+    text-decoration: underline;
+}
+
+.not-found-page::before {
+    content: "😔"; 
+    font-size: 5em;
+    margin-bottom: 30px;
+}
