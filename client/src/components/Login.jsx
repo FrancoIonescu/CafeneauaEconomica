@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import "./styles/Login.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
+import ErrorMessage from "./ErrorMessage";
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [parola, setParola] = useState("");
+    const [errorMessage, setErrorMessage] = useState(""); 
     const { login, user } = useAuth(); 
     const navigate = useNavigate();
 
@@ -17,37 +19,41 @@ const Login = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        setErrorMessage(""); 
+
         const rezultat = await login(email, parola);
         if (rezultat.success) {
             navigate("/");
             window.location.reload();
         } else {
-            alert(rezultat.message || "Conectare eșuată");
+            console.log(rezultat)
+            setErrorMessage(rezultat.message || "Autentificare eșuată! Verifică datele introduse.");
         }
     };
 
     return (
         <div>
+            <ErrorMessage message={errorMessage} clearMessage={() => setErrorMessage("")} />
             <h2 className="titlu">Conectare</h2>
             <div className="login">
                 <form id="login-form" onSubmit={handleSubmit}>
                     <input 
                         type="email" 
-                        placeholder="email" 
+                        placeholder="Email" 
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required 
                     />
                     <input 
                         type="password" 
-                        placeholder="parolă" 
+                        placeholder="Parolă" 
                         value={parola}
                         onChange={(e) => setParola(e.target.value)}
                         required 
                     />
                     <button type="submit">Login</button>
                     <span>Nu aveți cont? <a href="/register">Sign Up</a></span>
-                </form>        
+                </form>  
             </div>
         </div>
     );

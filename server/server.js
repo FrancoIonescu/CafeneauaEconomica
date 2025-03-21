@@ -34,7 +34,7 @@ app.post('/conectare', async (req, res) => {
         const utilizator = await Utilizator.findOne({ where: { email: email } });
 
         if (!utilizator || utilizator.parola !== parola) { 
-            return res.status(401).json({ message: 'Email sau parolă incorectă' });
+            return res.status(401).json({ message: 'Email sau parolă incorectă!' });
         }
 
         req.session.utilizatorId = utilizator.id_utilizator;  

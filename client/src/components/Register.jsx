@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import "./styles/Register.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
+import ErrorMessage from "./ErrorMessage";
 
 const Register = () => {
     const [numeUtilizator, setNumeUtilizator] = useState("");
     const [email, setEmail] = useState("");
     const [parola, setParola] = useState("");
     const [dataNastere, setDataNastere] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
     const { user, register } = useAuth(); 
     const navigate = useNavigate();
 
@@ -24,12 +26,13 @@ const Register = () => {
             navigate("/");
             window.location.reload();
         } else {
-            alert(rezultat.message || "Înregistrare eșuată");
+            setErrorMessage(rezultat.message || "Înregistrare eșuată! Verifică datele introduse.");
         }
     };
 
     return (
         <div>
+            <ErrorMessage message={errorMessage} clearMessage={() => setErrorMessage("")} />
             <h2 className="titlu">Înregistrare</h2>
             <div className="register">
                 <form id="register-form" onSubmit={handleSubmit}>
