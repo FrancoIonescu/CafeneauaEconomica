@@ -66,19 +66,13 @@ app.post('/deconectare', (req, res) => {
 });
 
 app.get('/sesiune', (req, res) => {
-    if (req.session.utilizatorId) {
-        let imagineBase64 = null;
-        if (req.session.imagine_profil && req.session.imagine_profil.data) {
-            const buffer = Buffer.from(req.session.imagine_profil.data);
-            imagineBase64 = `data:image/jpeg;base64,${buffer.toString('base64')}`;
-        }
-        
+    if (req.session.utilizatorId) {        
         res.json({ 
                    id_utilizator: req.session.utilizatorId,
                    nume_utilizator: req.session.nume_utilizator, 
                    email: req.session.email, 
                    este_moderator: req.session.este_moderator,
-                   imagine_profil: imagineBase64
+                   imagine_profil: req.session.imagine_profil
                 });
     } else {
         res.status(401).json({ message: 'Nu ești logat' });
@@ -89,9 +83,15 @@ app.post('/inregistrare', async (req, res) => {
     const { nume_utilizator, email, parola, data_nastere } = req.body;
 
     try {
-        const utilizatorExistent = await Utilizator.findOne({ where: { email } });
-        if (utilizatorExistent) {
+        const numeUtilizatorDejaExistent = await Utilizator.findOne({ where: { nume_utilizator } });
+        const emailDejaExistent = await Utilizator.findOne({ where: { email } });
+
+        if (emailDejaExistent) {
             return res.status(400).json({ message: 'Emailul este deja folosit!' });
+        }
+
+        if (numeUtilizatorDejaExistent) {
+            return res.status(400).json({ message: 'Numele de utilizator este deja folosit!' });
         }
 
         const utilizatorNou = await Utilizator.create({
@@ -153,7 +153,7 @@ app.get('/profil', async (req, res) => {
     try {
         const utilizator = await Utilizator.findOne({
             where: { id_utilizator: req.session.utilizatorId },  
-            attributes: ['nume_utilizator', 'email', 'imagine_profil']
+            attributes: ['imagine_profil', 'nume_utilizator', 'email', 'data_nastere', 'descriere', 'varsta', 'oras', 'ocupatie']
         });
 
         if (!utilizator) {
@@ -164,6 +164,16 @@ app.get('/profil', async (req, res) => {
     } catch (error) {
         console.error('Eroare la obținerea profilului:', error);
         res.status(500).json({ mesaj: 'Eroare de server' });
+    }
+});
+
+app.put('/profil', async (req, res) => {
+    try {
+        await Utilizator.update(req.body, { where: { id_utilizator: req.session.utilizatorId } });
+        res.json({ message: 'Profil actualizat cu succes!' });
+    } catch (error) {
+        console.error('Eroare la actualizarea profilului:', error);
+        res.status(500).json({ message: 'Eroare la actualizarea profilului.' });
     }
 });
 

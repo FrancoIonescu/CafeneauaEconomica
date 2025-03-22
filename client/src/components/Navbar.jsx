@@ -18,6 +18,13 @@ const Navbar = () => {
         setAfiseazaMeniu(false);
     };
 
+    const convertToBase64 = (arrayBuffer) => {
+        if (!arrayBuffer) return null;
+        const uint8Array = new Uint8Array(arrayBuffer);
+        const stringChar = uint8Array.reduce((data, byte) => data + String.fromCharCode(byte), '');
+        return `data:image/jpeg;base64,${btoa(stringChar)}`;
+    };
+
     return (
         <nav>
             <div className="navbar">
@@ -35,7 +42,7 @@ const Navbar = () => {
                         <div className="profil-container">
                             <strong>{user.nume_utilizator}</strong>
                             <img
-                                src={user.imagine_profil || imagineProfilDefault} 
+                                src={user.imagine_profil ? convertToBase64(user.imagine_profil.data) : imagineProfilDefault} 
                                 alt="Profil"
                                 className="profil-img"
                                 onClick={toggleMeniu}

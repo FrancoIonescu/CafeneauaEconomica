@@ -8,6 +8,10 @@ const Utilizator = sequelize.define('Utilizator', {
     parola: { type: DataTypes.STRING, allowNull: false },
     data_inregistrare: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
     data_nastere: { type: DataTypes.DATE, allowNull: true },
+    descriere: { type: DataTypes.TEXT, allowNull: true },
+    varsta: { type: DataTypes.INTEGER, allowNull: true },
+    oras: { type: DataTypes.STRING, allowNull: true },
+    ocupatie: { type: DataTypes.STRING, allowNull: true },
     este_moderator: { type: DataTypes.BOOLEAN, defaultValue: false },
     imagine_profil: { type: DataTypes.STRING, allowNull: true }
 }, {

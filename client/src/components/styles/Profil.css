@@ -13,6 +13,8 @@
     width: 80px;
     height: 80px;
     border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
 }
 
 .profil h2 {
@@ -29,4 +31,67 @@
     font-weight: bold;
     color: #5a754e;
     margin: 10px 0;
+}
+
+.profil button {
+    font-family: "Poppins", sans-serif;
+    background-color: #7c9a6d;
+    color: white;
+    border: none;
+    padding: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.profil button:hover {
+    background-color: #5a754e;
+}
+
+.profil label {
+    display: block;
+    font-weight: bold;
+    color: #914F1E;
+    margin-top: 10px;
+    text-align: left;
+}
+
+.profil textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+.profil input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.profil .input-container {
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.profil .buttons-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.profil .buttons-container button {
+    flex: 1;
+    margin: 0 5px;
 }

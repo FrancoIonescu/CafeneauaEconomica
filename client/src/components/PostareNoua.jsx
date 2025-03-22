@@ -65,7 +65,7 @@ const PostareNoua = () => {
                         value={continut}
                         onChange={(e) => setContinut(e.target.value)}
                         required
-                        rows="3" 
+                        rows="5" 
                     />
                     <select
                         value={categorieSelectata}
