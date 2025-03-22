@@ -149,10 +149,10 @@ app.get('/profil', async (req, res) => {
     if (!req.session || !req.session.utilizatorId) {
         return res.status(401).json({ mesaj: 'Utilizator neautentificat' });
     }
-    
+
     try {
         const utilizator = await Utilizator.findOne({
-            where: { id_utilizator: req.session.utilizatorId },  
+            where: { id_utilizator: req.session.utilizatorId },
             attributes: ['imagine_profil', 'nume_utilizator', 'email', 'data_nastere', 'descriere', 'varsta', 'oras', 'ocupatie']
         });
 
@@ -169,13 +169,19 @@ app.get('/profil', async (req, res) => {
 
 app.put('/profil', async (req, res) => {
     try {
+        if (req.body.imagine_profil) {
+            await Utilizator.update({ imagine_profil: req.body.imagine_profil }, { where: { id_utilizator: req.session.utilizatorId } });
+        }
+
         await Utilizator.update(req.body, { where: { id_utilizator: req.session.utilizatorId } });
+
         res.json({ message: 'Profil actualizat cu succes!' });
     } catch (error) {
         console.error('Eroare la actualizarea profilului:', error);
         res.status(500).json({ message: 'Eroare la actualizarea profilului.' });
     }
 });
+
 
 app.get('/postari', async (req, res) => {
     const pagina = parseInt(req.query.pagina) || 1;

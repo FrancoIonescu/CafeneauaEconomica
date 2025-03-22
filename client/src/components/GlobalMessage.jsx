@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import "./styles/ErrorMessage.css";
+import "./styles/GlobalMessage.css";
 
-const ErrorMessage = ({ message, clearMessage }) => {
+const GlobalMessage = ({ message, clearMessage }) => {
     useEffect(() => {
         if (message) {
             const timer = setTimeout(() => {
@@ -14,7 +14,7 @@ const ErrorMessage = ({ message, clearMessage }) => {
 
     if (!message) return null;
 
-    return <div className="error-box">{message}</div>;
+    return <div className="chenar-mesaj">{message}</div>;
 };
 
-export default ErrorMessage;
+export default GlobalMessage;

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import "./styles/Navbar.css";
 import { useNavigate } from "react-router-dom";
 import imagineProfilDefault from "./images/profile_photo.jpg";
@@ -6,23 +6,40 @@ import coffeeCup from '../../public/coffee-cup.svg'
 import { useAuth } from "./AuthContext";
 
 const Navbar = () => {
-    const { user, logout } = useAuth();
-    const [afiseazaMeniu, setAfiseazaMeniu] = useState(false);
-    const meniuRef = useRef(null);
+    const { user } = useAuth();
+    const [imagineProfil, setImagineProfil] = useState(null);
+    const [numeUtilizator, setNumeUtilizator] = useState("");
     const navigate = useNavigate();
+    const API_URL = import.meta.env.VITE_API_URL;
 
-    const toggleMeniu = () => setAfiseazaMeniu(!afiseazaMeniu);
+    if (user) {
+        const obtineDateProfil = async () => {
+            try {
+                const raspuns = await fetch(`${API_URL}/profil`, {
+                    method: "GET",
+                    credentials: "include",
+                });
+
+                if (raspuns.ok) {
+                    const date = await raspuns.json();
+                    setImagineProfil(date.imagine_profil);
+                    setNumeUtilizator(date.nume_utilizator);
+                } else {
+                    console.error("Eroare la preluarea datelor profilului.");
+                }
+            } catch (error) {
+                console.error("Eroare la conectarea cu serverul:", error);
+            } finally {
+                setLoadingProfil(false);
+            }
+        };
+
+        obtineDateProfil();
+    }
 
     const navigheazaProfil = () => {
         navigate("/profil");
         setAfiseazaMeniu(false);
-    };
-
-    const convertToBase64 = (arrayBuffer) => {
-        if (!arrayBuffer) return null;
-        const uint8Array = new Uint8Array(arrayBuffer);
-        const stringChar = uint8Array.reduce((data, byte) => data + String.fromCharCode(byte), '');
-        return `data:image/jpeg;base64,${btoa(stringChar)}`;
     };
 
     return (
@@ -39,20 +56,13 @@ const Navbar = () => {
                 </div>
                 <div className="login-container">
                     {user ? (
-                        <div className="profil-container">
-                            <strong>{user.nume_utilizator}</strong>
+                        <div onClick={navigheazaProfil} className="profil-container">
+                            <strong >{numeUtilizator}</strong>
                             <img
-                                src={user.imagine_profil ? convertToBase64(user.imagine_profil.data) : imagineProfilDefault} 
+                                src={imagineProfil ? `${API_URL}/imagini/${imagineProfil}` : imagineProfilDefault}
                                 alt="Profil"
                                 className="profil-img"
-                                onClick={toggleMeniu}
                             />
-                            {afiseazaMeniu && (
-                                <div className="meniu-dropdown" ref={meniuRef}>
-                                    <strong onClick={navigheazaProfil}>Profilul meu</strong><br />
-                                    <button onClick={logout}>Deconectare</button>
-                                </div>
-                            )}
                         </div>
                     ) : (
                         <div className="login-buttons">
@@ -64,7 +74,6 @@ const Navbar = () => {
             </div>
         </nav>
     );
-    
 };
 
 export default Navbar;

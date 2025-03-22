@@ -1,10 +1,10 @@
-.error-box {
+.chenar-mesaj {
     position: fixed;
     top: 100px;
     right: 10px;
-    background-color: #eb1628;
-    color: #fff;
-    border: 1px solid #f70f26;
+    background-color: #F7DCB9;
+    color: #914F1E;
+    border: 1px solid #ffbf6b;
     border-radius: 5px;
     padding: 15px 25px;
     font-weight: bold;

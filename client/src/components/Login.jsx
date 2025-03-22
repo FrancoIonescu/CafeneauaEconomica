@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import "./styles/Login.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
-import ErrorMessage from "./ErrorMessage";
+import GlobalMessage from "./GlobalMessage";
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [parola, setParola] = useState("");
-    const [errorMessage, setErrorMessage] = useState(""); 
+    const [globalMessage, setGlobalMessage] = useState("");
     const { login, user } = useAuth(); 
     const navigate = useNavigate();
 
@@ -19,21 +19,20 @@ const Login = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        setErrorMessage(""); 
-
+        
         const rezultat = await login(email, parola);
         if (rezultat.success) {
             navigate("/");
             window.location.reload();
         } else {
             console.log(rezultat)
-            setErrorMessage(rezultat.message || "Autentificare eșuată! Verifică datele introduse.");
+            setGlobalMessage(rezultat.message || "Autentificare eșuată! Verifică datele introduse.");
         }
     };
 
     return (
         <div>
-            <ErrorMessage message={errorMessage} clearMessage={() => setErrorMessage("")} />
+            <GlobalMessage message={globalMessage} clearMessage={() => setGlobalMessage("")} />
             <h2 className="titlu">Conectare</h2>
             <div className="login">
                 <form id="login-form" onSubmit={handleSubmit}>

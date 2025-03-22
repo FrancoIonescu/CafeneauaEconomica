@@ -3,10 +3,12 @@ import "./styles/Profil.css";
 import { useNavigate } from "react-router-dom";
 import imagineProfilDefault from "./images/profile_photo.jpg";
 import { useAuth } from "./AuthContext";
+import GlobalMessage from "./GlobalMessage";
 
 const Profil = () => {
-    const { user, loading } = useAuth();
+    const { user, loading, logout } = useAuth();
     const navigate = useNavigate();
+    const [globalMessage, setGlobalMessage] = useState("");
     const [imagineProfil, setImagineProfil] = useState(null);
     const [numeUtilizator, setNumeUtilizator] = useState("");
     const [email, setEmail] = useState("");
@@ -16,7 +18,8 @@ const Profil = () => {
     const [oras, setOras] = useState("");
     const [ocupatie, setOcupatie] = useState("");
     const [loadingProfil, setLoadingProfil] = useState(true);
-    const [editMode, setEditMode] = useState(false);
+    const [editareProfil, setEditareProfil] = useState(false);
+    const [imagineSelectata, setImagineSelectata] = useState(""); 
     const API_URL = import.meta.env.VITE_API_URL;
 
     useEffect(() => {
@@ -57,27 +60,20 @@ const Profil = () => {
         }
     }, [user, loading, navigate]);
 
-    const convertToBase64 = (arrayBuffer) => {
-        if (!arrayBuffer) return null;
-        const uint8Array = new Uint8Array(arrayBuffer);
-        const stringChar = uint8Array.reduce((data, byte) => data + String.fromCharCode(byte), '');
-        return `data:image/jpeg;base64,${btoa(stringChar)}`;
-    };
-
-    const handleUpdateProfil = async () => {
+    const editeazaProfil = async () => {
         try {
             const raspuns = await fetch(`${API_URL}/profil`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",
-                body: JSON.stringify({ descriere, varsta, oras, ocupatie }),
+                body: JSON.stringify({ descriere, varsta, oras, ocupatie, imagine_profil: imagineSelectata }), 
             });
 
             if (raspuns.ok) {
-                alert("Profil actualizat cu succes!");
-                setEditMode(false);
+                setEditareProfil(false);
+                setGlobalMessage("Profilul a fost actualizat cu succes.");
             } else {
-                alert("Eroare la actualizarea profilului.");
+                setGlobalMessage("Eroare la actualizarea profilului. Încearcă din nou mai târziu.");
             }
         } catch (error) {
             console.error("Eroare la actualizarea profilului:", error);
@@ -88,19 +84,19 @@ const Profil = () => {
         return <p>Se încarcă profilul...</p>;
     }
 
-    console.log(varsta)
     return (
         <div className="profil">
+            <GlobalMessage message={globalMessage} clearMessage={() => setGlobalMessage("")} />
             <h2>Profil utilizator</h2>
             <img
-                src={imagineProfil ? convertToBase64(imagineProfil.data) : imagineProfilDefault}
+                src={imagineProfil ? `${API_URL}/imagini/${imagineProfil}` : imagineProfilDefault}
                 alt="Imagine profil"
                 className="profil-imagine"
             />
             <p><strong>Nume:</strong> {numeUtilizator}</p>
             <p><strong>Email:</strong> {email}</p>
             <p><strong>Data nașterii:</strong> {dataNastere}</p>
-            {editMode ? (
+            {editareProfil ? (
                 <>
                     <label>Descriere:</label>
                     <textarea value={descriere} rows="5" onChange={(e) => setDescriere(e.target.value)} />
@@ -110,8 +106,48 @@ const Profil = () => {
                     <input type="text" value={oras} onChange={(e) => setOras(e.target.value)} />
                     <label>Ocupație:</label>
                     <input type="text" value={ocupatie} onChange={(e) => setOcupatie(e.target.value)} />
-                    <button onClick={() => setEditMode(false)}>Anulează</button>
-                    <button onClick={handleUpdateProfil}>Salvează</button>
+
+                    <label>Imagine profil:</label>
+                    <div className="imagine-selectata">
+                        <div 
+                            className={`imagine-option ${imagineSelectata === "avatar1.png" ? "selected" : ""}`}
+                            onClick={() => setImagineSelectata("avatar1.png")}
+                        >
+                            <img src={`${API_URL}/imagini/avatar1.png`} alt="Avatar 1" />
+                        </div>
+                        <div 
+                            className={`imagine-option ${imagineSelectata === "avatar2.png" ? "selected" : ""}`}
+                            onClick={() => setImagineSelectata("avatar2.png")}
+                        >
+                            <img src={`${API_URL}/imagini/avatar2.png`} alt="Avatar 2" />
+                        </div>
+                        <div 
+                            className={`imagine-option ${imagineSelectata === "avatar3.png" ? "selected" : ""}`}
+                            onClick={() => setImagineSelectata("avatar3.png")}
+                        >
+                            <img src={`${API_URL}/imagini/avatar3.png`} alt="Avatar 3" />
+                        </div>
+                        <div 
+                            className={`imagine-option ${imagineSelectata === "avatar4.png" ? "selected" : ""}`}
+                            onClick={() => setImagineSelectata("avatar4.png")}
+                        >
+                            <img src={`${API_URL}/imagini/avatar4.png`} alt="Avatar 4" />
+                        </div>
+                        <div 
+                            className={`imagine-option ${imagineSelectata === "avatar5.png" ? "selected" : ""}`}
+                            onClick={() => setImagineSelectata("avatar5.png")}
+                        >
+                            <img src={`${API_URL}/imagini/avatar5.png`} alt="Avatar 5" />
+                        </div>
+                        <div 
+                            className={`imagine-option ${imagineSelectata === "avatar6.png" ? "selected" : ""}`}
+                            onClick={() => setImagineSelectata("avatar6.png")}
+                        >
+                            <img src={`${API_URL}/imagini/avatar6.png`} alt="Avatar 6" />
+                        </div>
+                    </div>
+                    <button onClick={() => setEditareProfil(false)}>Anulează</button>
+                    <button onClick={editeazaProfil}>Salvează</button>
                 </>
             ) : (
                 <>
@@ -119,7 +155,8 @@ const Profil = () => {
                     <p><strong>Vârsta:</strong> {varsta}</p>
                     <p><strong>Oraș:</strong> {oras}</p>
                     <p><strong>Ocupație:</strong> {ocupatie}</p>
-                    <button onClick={() => setEditMode(true)}>Editează profilul</button>
+                    <button onClick={() => setEditareProfil(true)}>Editează profilul</button>
+                    <button onClick={logout}>Deconectare</button>
                 </>
             )}
         </div>

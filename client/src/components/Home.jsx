@@ -121,13 +121,6 @@ const Home = () => {
         setComentariiVizibile(prev => (prev === id_postare ? null : id_postare));
     };
 
-    const convertToBase64 = (arrayBuffer) => {
-        if (!arrayBuffer) return null;
-        const uint8Array = new Uint8Array(arrayBuffer);
-        const stringChar = uint8Array.reduce((data, byte) => data + String.fromCharCode(byte), '');
-        return `data:image/jpeg;base64,${btoa(stringChar)}`;
-    };
-
     return (
         <div className="home">
             <h1>Postări</h1>
@@ -157,9 +150,7 @@ const Home = () => {
                         <div className="postare-header">  
                             <div className="continut-autor">
                                 <img 
-                                    src={postare.utilizator.imagine_profil 
-                                        ? convertToBase64(postare.utilizator.imagine_profil.data) 
-                                        : imagineProfilDefault} 
+                                    src={postare.utilizator.imagine_profil ? `${API_URL}/imagini/${postare.utilizator.imagine_profil}` : imagineProfilDefault}
                                     alt="Profil" 
                                     className="profil-img"
                                 />
@@ -191,9 +182,7 @@ const Home = () => {
                                         <div className="comentariu" key={comentariu.id_comentariu}>
                                             <div className="continut-autor">
                                                 <img 
-                                                    src={comentariu.utilizator.imagine_profil 
-                                                        ? convertToBase64(comentariu.utilizator.imagine_profil.data) 
-                                                        : imagineProfilDefault} 
+                                                    src={comentariu.utilizator.imagine_profil ? `${API_URL}/imagini/${comentariu.utilizator.imagine_profil}` : imagineProfilDefault}
                                                     alt="Profil" 
                                                     className="profil-img"
                                                 />
