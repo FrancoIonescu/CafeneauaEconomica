@@ -10,6 +10,8 @@ const Home = () => {
     const [paginaCurenta, setPaginaCurenta] = useState(1);
     const [categorii, setCategorii] = useState([]);
     const [categorieSelectata, setCategorieSelectata] = useState(0);
+    const [inputCautare, setInputCautare] = useState("");
+    const [cautare, setCautare] = useState("");
     const [comentariiVizibile, setComentariiVizibile] = useState(null);
     const [baraVizibila, setBaraVizibila] = useState(true);
     const [comentariuNou, setComentariuNou] = useState("");
@@ -20,7 +22,7 @@ const Home = () => {
 
     const afisarePostari = useCallback(async () => {
         try {
-            const raspuns = await fetch(`${API_URL}/postari?pagina=${paginaCurenta}&id_categorie=${categorieSelectata}`, {
+            const raspuns = await fetch(`${API_URL}/postari?pagina=${paginaCurenta}&id_categorie=${categorieSelectata}&cautare=${encodeURIComponent(cautare)}`, {
                 credentials: "include"
             });
             const date = await raspuns.json();
@@ -30,7 +32,7 @@ const Home = () => {
         } catch (err) {
             console.error("Eroare la obținerea postărilor:", err);
         }
-    }, [paginaCurenta, categorieSelectata]);
+    }, [paginaCurenta, categorieSelectata, cautare]);
 
     useEffect(() => {
         const afisareCategorii = async () => {
@@ -145,6 +147,13 @@ const Home = () => {
                 <button onClick={() => navigate("/postare-noua")}>
                     Postare nouă
                 </button>
+                <input 
+                    type="text" 
+                    value={inputCautare} 
+                    onChange={(e) => setInputCautare(e.target.value)} 
+                    placeholder="Caută postări..."
+                />
+                <button onClick={() => setCautare(inputCautare)}>Caută</button>
                 {postari.map(postare => (
                     <div className="postare" key={postare.id_postare}>
                         <div className="postare-header">  

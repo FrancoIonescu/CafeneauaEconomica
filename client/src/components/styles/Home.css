@@ -70,6 +70,17 @@
     z-index: 1;
 }
 
+.home input {
+    width: 640px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
 .postari-feed {
     margin-top: 20px;
 }

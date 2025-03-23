@@ -222,10 +222,21 @@ app.get('/postari', async (req, res) => {
     const postariPePagina = 5;
     const utilizatorId = req.session.id_utilizator || 0;
     const categorieId = req.query.id_categorie || null;
+    const cautare = req.query.cautare ? req.query.cautare.trim() : '';
+
+    let conditii = {};
+    
+    if (categorieId && categorieId != 0) {
+        conditii.id_categorie = categorieId;
+    }
+
+    if (cautare) {
+        conditii.continut = { [Sequelize.Op.like]: `%${cautare}%` };
+    }
 
     try {
         const postari = await Postare.findAll({
-            where: categorieId != 0 ? { id_categorie: categorieId } : {},
+            where: conditii,
             limit: postariPePagina,
             offset: (pagina - 1) * postariPePagina,
             order: [['id_postare', 'DESC']],
@@ -251,12 +262,6 @@ app.get('/postari', async (req, res) => {
                         as: 'utilizator',
                         attributes: ['nume_utilizator', 'imagine_profil']
                     }
-                },
-                {
-                    model: Apreciere,
-                    as: 'aprecieri',
-                    attributes: [],
-                    required: false
                 }
             ],
             attributes: [
@@ -269,9 +274,7 @@ app.get('/postari', async (req, res) => {
             ]
         });
 
-        const totalPostari = await Postare.count({ 
-            where: categorieId != 0 ? { id_categorie: categorieId } : {}
-        });
+        const totalPostari = await Postare.count({ where: conditii });
 
         res.json({ postari, totalPostari });
     } catch (err) {
@@ -279,6 +282,7 @@ app.get('/postari', async (req, res) => {
         res.status(500).json({ message: 'Eroare la server' });
     }
 });
+
 
 app.get('/categorii', async (req, res) => {
     try {
