@@ -1,9 +1,9 @@
 import React from 'react';
-import './styles/PageNotFound.css';
+import './styles/PaginaLipsa.css';
 
-const PageNotFound = () => {
+const PaginaLipsa = () => {
     return (
-        <div className="not-found-page">
+        <div className="pagina-lipsa">
             <h1>404 Not Found</h1>
             <p>Ne pare rău, pagina pe care o cauți nu a fost găsită.</p>
             <p><a href="/">Înapoi la pagina principală</a></p>
@@ -11,4 +11,4 @@ const PageNotFound = () => {
     );
 };
 
-export default PageNotFound;
+export default PaginaLipsa;

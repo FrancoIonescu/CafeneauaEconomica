@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./styles/Navbar.css";
 import { useNavigate } from "react-router-dom";
 import imagineProfilDefault from "./images/profile_photo.jpg";
+import notificationBell from "./images/notification-bell.png";
 import coffeeCup from '../../public/coffee-cup.svg'
 import { useAuth } from "./AuthContext";
 
@@ -29,8 +30,6 @@ const Navbar = () => {
                 }
             } catch (error) {
                 console.error("Eroare la conectarea cu serverul:", error);
-            } finally {
-                setLoadingProfil(false);
             }
         };
 
@@ -39,7 +38,10 @@ const Navbar = () => {
 
     const navigheazaProfil = () => {
         navigate("/profil");
-        setAfiseazaMeniu(false);
+    };
+
+    const navigheazaNotificari = () => {
+        navigate("/notificari");
     };
 
     return (
@@ -56,13 +58,19 @@ const Navbar = () => {
                 </div>
                 <div className="login-container">
                     {user ? (
-                        <div onClick={navigheazaProfil} className="profil-container">
-                            <strong >{numeUtilizator}</strong>
-                            <img
+                        <div className="profil-container">
+                            <strong onClick={navigheazaProfil}>{numeUtilizator}</strong>
+                            <img 
+                                onClick={navigheazaProfil}
                                 src={imagineProfil ? `${API_URL}/imagini/${imagineProfil}` : imagineProfilDefault}
                                 alt="Profil"
                                 className="profil-img"
                             />
+                            <img 
+                                onClick={navigheazaNotificari}
+                                src={notificationBell} 
+                                alt="Notificari" 
+                                className="notification-img" />
                         </div>
                     ) : (
                         <div className="login-buttons">

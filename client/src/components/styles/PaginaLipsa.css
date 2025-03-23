@@ -1,4 +1,4 @@
-.not-found-page {
+.pagina-lipsa {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -8,29 +8,29 @@
     background-color: #B5C18E;
 }
 
-.not-found-page h1 {
+.pagina-lipsa h1 {
     font-size: 3em;
     color: #914F1E;
     margin-bottom: 20px;
 }
 
-.not-found-page p {
+.pagina-lipsa p {
     font-size: 1.2em;
     color: #914F1E;
     margin-bottom: 15px;
 }
 
-.not-found-page a {
+.pagina-lipsa a {
     color: #914F1E;
     text-decoration: none;
     font-weight: bold;
 }
 
-.not-found-page a:hover {
+.pagina-lipsa a:hover {
     text-decoration: underline;
 }
 
-.not-found-page::before {
+.pagina-lipsa::before {
     content: "😔"; 
     font-size: 5em;
     margin-bottom: 30px;

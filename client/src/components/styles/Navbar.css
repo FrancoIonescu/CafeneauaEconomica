@@ -68,6 +68,13 @@ nav {
     cursor: pointer;
 }
 
+.notification-img {
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
 .login-buttons {
     display: flex;
     gap: 10px;

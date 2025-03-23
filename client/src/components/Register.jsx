@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import "./styles/Register.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
-import GlobalMessage from "./GlobalMessage";
+import MesajGlobal from "./MesajGlobal";
 
 const Register = () => {
     const [numeUtilizator, setNumeUtilizator] = useState("");
     const [email, setEmail] = useState("");
     const [parola, setParola] = useState("");
     const [dataNastere, setDataNastere] = useState("");
-    const [globalMessage, setGlobalMessage] = useState("");
+    const [mesajGlobal, setMesajGlobal] = useState("");
     const { user, register } = useAuth(); 
     const navigate = useNavigate();
 
@@ -26,13 +26,13 @@ const Register = () => {
             navigate("/");
             window.location.reload();
         } else {
-            setGlobalMessage(rezultat.message || "Înregistrare eșuată! Verifică datele introduse.");
+            setMesajGlobal(rezultat.message || "Înregistrare eșuată! Verifică datele introduse.");
         }
     };
 
     return (
         <div>
-            <GlobalMessage message={globalMessage} clearMessage={() => setGlobalMessage("")} />
+            <MesajGlobal message={mesajGlobal} clearMessage={() => setMesajGlobal("")} />
             <h2 className="titlu">Înregistrare</h2>
             <div className="register">
                 <form id="register-form" onSubmit={handleSubmit}>

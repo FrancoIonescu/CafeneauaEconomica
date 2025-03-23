@@ -6,9 +6,10 @@ import Home from "./components/Home";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Profil from "./components/Profil"; 
+import Notificari from "./components/Notificari";
 import PostareNoua from "./components/PostareNoua";
 import Footer from "./components/Footer";
-import PageNotFound from './components/PageNotFound';
+import PaginaLipsa from "./components/PaginaLipsa";
 
 const App = () => {
     return (
@@ -20,8 +21,9 @@ const App = () => {
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/profil" element={<Profil />} />
+                    <Route path="/notificari" element={<Notificari />} />
                     <Route path="/postare-noua" element={<PostareNoua />} />
-                    <Route path="*" element={<PageNotFound />} />
+                    <Route path="*" element={<PaginaLipsa />} />
                 </Routes>
             </Router>
         </AuthProvider>

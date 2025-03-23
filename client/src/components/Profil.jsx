@@ -3,7 +3,7 @@ import "./styles/Profil.css";
 import { useNavigate } from "react-router-dom";
 import imagineProfilDefault from "./images/profile_photo.jpg";
 import { useAuth } from "./AuthContext";
-import GlobalMessage from "./GlobalMessage";
+import GlobalMessage from "./MesajGlobal";
 
 const Profil = () => {
     const { user, loading, logout } = useAuth();
@@ -17,7 +17,6 @@ const Profil = () => {
     const [varsta, setVarsta] = useState("");
     const [oras, setOras] = useState("");
     const [ocupatie, setOcupatie] = useState("");
-    const [loadingProfil, setLoadingProfil] = useState(true);
     const [editareProfil, setEditareProfil] = useState(false);
     const [imagineSelectata, setImagineSelectata] = useState(""); 
     const API_URL = import.meta.env.VITE_API_URL;
@@ -51,9 +50,7 @@ const Profil = () => {
                     }
                 } catch (error) {
                     console.error("Eroare la conectarea cu serverul:", error);
-                } finally {
-                    setLoadingProfil(false);
-                }
+                } 
             };
 
             obtineDateProfil();
@@ -62,16 +59,31 @@ const Profil = () => {
 
     const editeazaProfil = async () => {
         try {
+            let dateProfilModificate = {
+                descriere,
+                varsta,
+                oras,
+                ocupatie,
+            };
+    
+            if (imagineSelectata && imagineSelectata !== imagineProfil) {
+                dateProfilModificate.imagine_profil = imagineSelectata;
+            }
+    
             const raspuns = await fetch(`${API_URL}/profil`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",
-                body: JSON.stringify({ descriere, varsta, oras, ocupatie, imagine_profil: imagineSelectata }), 
+                body: JSON.stringify(dateProfilModificate),
             });
-
+    
             if (raspuns.ok) {
                 setEditareProfil(false);
                 setGlobalMessage("Profilul a fost actualizat cu succes.");
+                
+                if (imagineSelectata) {
+                    setImagineProfil(imagineSelectata);
+                }
             } else {
                 setGlobalMessage("Eroare la actualizarea profilului. Încearcă din nou mai târziu.");
             }
@@ -80,7 +92,7 @@ const Profil = () => {
         }
     };
 
-    if (loading || loadingProfil) {
+    if (loading) {
         return <p>Se încarcă profilul...</p>;
     }
 

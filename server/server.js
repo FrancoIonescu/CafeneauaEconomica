@@ -2,6 +2,7 @@ const express = require('express');
 const sequelize = require('./db');
 const Sequelize = require('sequelize');
 const Utilizator = require('./models/utilizator'); 
+const Notificare = require('./models/notificare');
 const Postare = require('./models/postare');
 const Categorie = require('./models/categorie');
 const Apreciere = require('./models/apreciere');
@@ -37,7 +38,7 @@ app.post('/conectare', async (req, res) => {
             return res.status(401).json({ message: 'Email sau parolă incorectă!' });
         }
 
-        req.session.utilizatorId = utilizator.id_utilizator;  
+        req.session.id_utilizator = utilizator.id_utilizator;  
         req.session.nume_utilizator = utilizator.nume_utilizator;
         req.session.email = utilizator.email;
         req.session.este_moderator = utilizator.este_moderator;
@@ -66,9 +67,9 @@ app.post('/deconectare', (req, res) => {
 });
 
 app.get('/sesiune', (req, res) => {
-    if (req.session.utilizatorId) {        
+    if (req.session.id_utilizator) {        
         res.json({ 
-                   id_utilizator: req.session.utilizatorId,
+                   id_utilizator: req.session.id_utilizator,
                    nume_utilizator: req.session.nume_utilizator, 
                    email: req.session.email, 
                    este_moderator: req.session.este_moderator,
@@ -101,7 +102,7 @@ app.post('/inregistrare', async (req, res) => {
             data_nastere
         });
 
-        req.session.utilizatorId = utilizatorNou.id_utilizator;  
+        req.session.id_utilizator = utilizatorNou.id_utilizator;  
         req.session.nume_utilizator = utilizatorNou.nume_utilizator;
         req.session.email = utilizatorNou.email;
         req.session.este_moderator = utilizatorNou.este_moderator;
@@ -146,13 +147,13 @@ app.get('/utilizatori', async (req, res) => {
 })
 
 app.get('/profil', async (req, res) => {
-    if (!req.session || !req.session.utilizatorId) {
+    if (!req.session || !req.session.id_utilizator) {
         return res.status(401).json({ mesaj: 'Utilizator neautentificat' });
     }
 
     try {
         const utilizator = await Utilizator.findOne({
-            where: { id_utilizator: req.session.utilizatorId },
+            where: { id_utilizator: req.session.id_utilizator },
             attributes: ['imagine_profil', 'nume_utilizator', 'email', 'data_nastere', 'descriere', 'varsta', 'oras', 'ocupatie']
         });
 
@@ -170,10 +171,10 @@ app.get('/profil', async (req, res) => {
 app.put('/profil', async (req, res) => {
     try {
         if (req.body.imagine_profil) {
-            await Utilizator.update({ imagine_profil: req.body.imagine_profil }, { where: { id_utilizator: req.session.utilizatorId } });
+            await Utilizator.update({ imagine_profil: req.body.imagine_profil }, { where: { id_utilizator: req.session.id_utilizator } });
         }
 
-        await Utilizator.update(req.body, { where: { id_utilizator: req.session.utilizatorId } });
+        await Utilizator.update(req.body, { where: { id_utilizator: req.session.id_utilizator } });
 
         res.json({ message: 'Profil actualizat cu succes!' });
     } catch (error) {
@@ -182,11 +183,44 @@ app.put('/profil', async (req, res) => {
     }
 });
 
+app.get('/notificari', async (req, res) => {
+    if (!req.session || !req.session.id_utilizator) {
+        return res.status(401).json({ mesaj: 'Utilizator neautentificat' });
+    }
+
+    try {
+        const notificari = await Notificare.findAll({
+            where: { id_utilizator: req.session.id_utilizator },
+            order: [['data_notificare', 'DESC']]
+        });
+
+        res.json(notificari);
+    } catch (error) {
+        console.error('Eroare la obținerea notificărilor:', error);
+        res.status(500).json({ mesaj: 'Eroare de server' });
+    }
+});
+
+app.delete('/notificari', async (req, res) => {
+    const { id_notificare } = req.body;
+
+    if (!req.session || !req.session.id_utilizator) {
+        return res.status(401).json({ mesaj: 'Utilizator neautentificat' });
+    }
+
+    try {
+        await Notificare.destroy({ where: { id_notificare: id_notificare } });
+        res.json({ mesaj: 'Notificare ștearsă cu succes' });
+    } catch (error) {
+        console.error('Eroare la ștergerea notificării:', error);
+        res.status(500).json({ mesaj: 'Eroare de server' });
+    }
+});
 
 app.get('/postari', async (req, res) => {
     const pagina = parseInt(req.query.pagina) || 1;
     const postariPePagina = 5;
-    const utilizatorId = req.session.utilizatorId || 0;
+    const utilizatorId = req.session.id_utilizator || 0;
     const categorieId = req.query.id_categorie || null;
 
     try {
@@ -261,7 +295,7 @@ app.get('/categorii', async (req, res) => {
 
 app.post('/postari', async (req, res) => {
     const { continut, id_categorie } = req.body;
-    const id_utilizator = req.session.utilizatorId;
+    const id_utilizator = req.session.id_utilizator;
 
     try {
         if (!continut || !id_categorie || !id_utilizator) {

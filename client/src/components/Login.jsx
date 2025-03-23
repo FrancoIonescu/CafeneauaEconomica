@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import "./styles/Login.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
-import GlobalMessage from "./GlobalMessage";
+import MesajGlobal from "./MesajGlobal";
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [parola, setParola] = useState("");
-    const [globalMessage, setGlobalMessage] = useState("");
+    const [mesajGlobal, setMesajGlobal] = useState("");
     const { login, user } = useAuth(); 
     const navigate = useNavigate();
 
@@ -26,13 +26,13 @@ const Login = () => {
             window.location.reload();
         } else {
             console.log(rezultat)
-            setGlobalMessage(rezultat.message || "Autentificare eșuată! Verifică datele introduse.");
+            setMesajGlobal(rezultat.message || "Autentificare eșuată! Verifică datele introduse.");
         }
     };
 
     return (
         <div>
-            <GlobalMessage message={globalMessage} clearMessage={() => setGlobalMessage("")} />
+            <MesajGlobal message={mesajGlobal} clearMessage={() => setMesajGlobal("")} />
             <h2 className="titlu">Conectare</h2>
             <div className="login">
                 <form id="login-form" onSubmit={handleSubmit}>

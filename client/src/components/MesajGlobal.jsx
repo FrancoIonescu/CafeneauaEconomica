@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import "./styles/GlobalMessage.css";
+import "./styles/MesajGlobal.css";
 
-const GlobalMessage = ({ message, clearMessage }) => {
+const MesajGlobal = ({ message, clearMessage }) => {
     useEffect(() => {
         if (message) {
             const timer = setTimeout(() => {
@@ -17,4 +17,4 @@ const GlobalMessage = ({ message, clearMessage }) => {
     return <div className="chenar-mesaj">{message}</div>;
 };
 
-export default GlobalMessage;
+export default MesajGlobal;

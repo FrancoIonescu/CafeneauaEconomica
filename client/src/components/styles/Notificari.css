@@ -1,0 +1,98 @@
+.notificari {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #F7DCB9;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    font-family: "Poppins", sans-serif;
+    text-align: center;
+}
+
+.titlu {
+    font-family: "Spicy Rice", serif;
+    font-style: normal;
+    color: #914F1E;
+    font-size: 30px;
+    text-shadow: 0px 2px 3px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+    text-align: center;
+    width: fit-content;
+}
+
+.notificari ul {
+    list-style: none;
+    padding: 0;
+}
+
+.notificari li {
+    background-color: white;
+    padding: 12px 18px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    color: #914F1E;
+    font-weight: bold;
+    display: grid; /* Schimbat la grid */
+    grid-template-columns: 1fr auto; /* Defineste coloanele */
+    align-items: center; /* Aliniere verticala */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease-in-out, background-color 0.3s ease-in-out;
+    gap: 10px;
+}
+
+.notificari li:hover {
+    background-color: #F0D0A8;
+    transform: scale(1.02);
+}
+
+.notificari li .icon {
+    font-size: 18px;
+    color: #914F1E;
+    flex-shrink: 0;
+    grid-column: 1; /* Asezat in prima coloana */
+}
+
+.notificari li .content {
+    grid-column: 1; /* Asezat in prima coloana */
+    text-align: left;
+}
+
+.notificari li .content p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+}
+
+.notificari li .content span {
+    display: block;
+    font-size: 12px;
+    color: #914F1E;
+    font-weight: bold;
+    margin-top: 4px;
+}
+
+.notificari p {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #914F1E;
+}
+
+.notificari li .notificare-button { /* Clasa noua pentru buton */
+    font-family: "Poppins", sans-serif;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    background-color: #7c9a6d;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    grid-column: 2; /* Asezat in a doua coloana */
+    justify-self: end; /* Aliniat la dreapta */
+}
+
+.notificari li .notificare-button:hover {
+    background-color: #5a754e;
+}
