@@ -102,6 +102,11 @@ app.post('/inregistrare', async (req, res) => {
             data_nastere
         });
 
+        await Notificare.create({
+            id_utilizator: utilizatorNou.id_utilizator,
+            mesaj: 'Bun venit în Cafeneaua Economică!'
+        });
+
         req.session.id_utilizator = utilizatorNou.id_utilizator;  
         req.session.nume_utilizator = utilizatorNou.nume_utilizator;
         req.session.email = utilizatorNou.email;
@@ -356,11 +361,25 @@ app.post('/comentarii', async (req, res) => {
             return res.status(400).json({ message: "Lipsesc parametrii necesari" });
         }
 
+        const postare = await Postare.findByPk(id_postare);
+
         const comentariuNou = await Comentariu.create({
             continut,
             id_utilizator,
             id_postare
         });
+
+        if (id_utilizator !== postare.id_utilizator) {
+            await Notificare.create({
+                id_utilizator: postare.id_utilizator,
+                mesaj: `Ai primit un comentariu la postarea: "${postare.continut.split(' ').slice(0, 5).join(' ')}..."`
+            });
+
+            await Notificare.create({
+                id_utilizator: id_utilizator,
+                mesaj: `Ai trimis un comentariu la postarea: "${postare.continut.split(' ').slice(0, 5).join(' ')}..."`
+            });
+        }
 
         res.status(201).json({ message: "Comentariu adăugat cu succes", comentariu: comentariuNou });
     } catch (err) {

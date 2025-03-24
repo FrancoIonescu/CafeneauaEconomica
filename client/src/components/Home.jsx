@@ -3,6 +3,7 @@ import './styles/Home.css';
 import { useNavigate } from "react-router-dom";
 import imagineProfilDefault from "./images/profile_photo.jpg";
 import { useAuth } from "./AuthContext";
+import MesajGlobal from "./MesajGlobal";
 
 const Home = () => {
     const [postari, setPostari] = useState([]);
@@ -15,6 +16,7 @@ const Home = () => {
     const [comentariiVizibile, setComentariiVizibile] = useState(null);
     const [baraVizibila, setBaraVizibila] = useState(true);
     const [comentariuNou, setComentariuNou] = useState("");
+    const [mesajGlobal, setMesajGlobal] = useState("");
     const { user } = useAuth();
     const navigate = useNavigate();
     const totalPagini = Math.ceil(totalPostari / 5);
@@ -108,7 +110,7 @@ const Home = () => {
             if (raspuns.ok) {
                 const comentariuAdaugat = await raspuns.json();
                 console.log("Comentariu adăugat:", comentariuAdaugat);
-    
+                setMesajGlobal("Comentariul a fost adăugat cu succes!");
                 setComentariuNou("");
                 afisarePostari();
             } else {
@@ -125,6 +127,7 @@ const Home = () => {
 
     return (
         <div className="home">
+            <MesajGlobal message={mesajGlobal} clearMessage={() => setMesajGlobal("")} />
             <h1>Postări</h1>
             <div className="bara-categorii">
                 <button onClick={vizibilitateBaraCategorii}>
