@@ -32,9 +32,9 @@
     border-radius: 8px;
     color: #914F1E;
     font-weight: bold;
-    display: grid; /* Schimbat la grid */
-    grid-template-columns: 1fr auto; /* Defineste coloanele */
-    align-items: center; /* Aliniere verticala */
+    display: grid; 
+    grid-template-columns: 1fr auto; 
+    align-items: center; 
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
     transition: transform 0.2s ease-in-out, background-color 0.3s ease-in-out;
     gap: 10px;
@@ -49,11 +49,11 @@
     font-size: 18px;
     color: #914F1E;
     flex-shrink: 0;
-    grid-column: 1; /* Asezat in prima coloana */
+    grid-column: 1;
 }
 
 .notificari li .content {
-    grid-column: 1; /* Asezat in prima coloana */
+    grid-column: 1; 
     text-align: left;
 }
 
@@ -79,7 +79,7 @@
     color: #914F1E;
 }
 
-.notificari li .notificare-button { /* Clasa noua pentru buton */
+.notificari li .notificare-button {
     font-family: "Poppins", sans-serif;
     padding: 8px 12px;
     border: none;
@@ -89,8 +89,8 @@
     color: white;
     font-size: 14px;
     cursor: pointer;
-    grid-column: 2; /* Asezat in a doua coloana */
-    justify-self: end; /* Aliniat la dreapta */
+    grid-column: 2; 
+    justify-self: end;
 }
 
 .notificari li .notificare-button:hover {

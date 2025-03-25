@@ -288,6 +288,18 @@ app.get('/postari', async (req, res) => {
     }
 });
 
+app.delete('/postari', async (req, res) => {
+    const { id_postare } = req.body;
+
+    try {
+        await Postare.destroy({ where: { id_postare } });
+
+        res.json({ message: 'Postare ștearsă cu succes' });
+    } catch (err) {
+        console.error('Eroare la ștergerea postării:', err);
+        res.status(500).json({ message: 'Eroare la server' });
+    }
+});
 
 app.get('/categorii', async (req, res) => {
     try {
@@ -385,6 +397,19 @@ app.post('/comentarii', async (req, res) => {
     } catch (err) {
         console.error("Eroare la adăugarea comentariului:", err);
         res.status(500).json({ message: "Eroare la server" });
+    }
+});
+
+app.delete('/comentarii', async (req, res) => {
+    const { id_comentariu } = req.body;
+
+    try {
+        await Comentariu.destroy({ where: { id_comentariu } });
+
+        res.json({ message: 'Comentariu șters cu succes' });
+    } catch (err) {
+        console.error('Eroare la ștergerea comentariului:', err);
+        res.status(500).json({ message: 'Eroare la server' });
     }
 });
 
