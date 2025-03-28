@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./styles/Profil.css";
 import { useNavigate } from "react-router-dom";
-import imagineProfilDefault from "./images/profile_photo.jpg";
+import imagineProfilAnonim from "./images/profil-anonim.jpg";
 import { useAuth } from "./AuthContext";
 import GlobalMessage from "./MesajGlobal";
 
@@ -101,7 +101,7 @@ const Profil = () => {
             <GlobalMessage message={globalMessage} clearMessage={() => setGlobalMessage("")} />
             <h2>Profil utilizator</h2>
             <img
-                src={imagineProfil ? `${API_URL}/imagini/${imagineProfil}` : imagineProfilDefault}
+                src={imagineProfil ? `${API_URL}/imagini/${imagineProfil}` : imagineProfilAnonim}
                 alt="Imagine profil"
                 className="profil-imagine"
             />

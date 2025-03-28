@@ -6,11 +6,10 @@ const Footer = () => {
     return (
         <footer className="footer">
             <div className="footer-content">
-                <a href="/about">Despre</a>
+                <a href="/despre">Despre</a>
                 <a href="/contact">Contact</a>
-                <a href="/rules">Regulament</a>
-                <a href="/statistics">Statistici</a>
-                <a href="/social">Social</a>
+                <a href="/regulament">Regulament</a>
+                <a href="/statistici">Statistici</a>
             </div>
             <div className="copyright">
                 &copy; {new Date().getFullYear()} Cafeneaua Economica

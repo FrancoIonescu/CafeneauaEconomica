@@ -4,6 +4,7 @@ const Sequelize = require('sequelize');
 const Utilizator = require('./models/utilizator'); 
 const Notificare = require('./models/notificare');
 const Postare = require('./models/postare');
+const Sanctiune = require('./models/sanctiune');
 const Categorie = require('./models/categorie');
 const Apreciere = require('./models/apreciere');
 const Comentariu = require('./models/comentariu');
@@ -27,44 +28,6 @@ app.use(session({
     saveUninitialized: true,  
     cookie: { secure: false } 
 }));
-
-app.post('/conectare', async (req, res) => {
-    const { email, parola } = req.body;
-
-    try {
-        const utilizator = await Utilizator.findOne({ where: { email: email } });
-
-        if (!utilizator || utilizator.parola !== parola) { 
-            return res.status(401).json({ message: 'Email sau parolă incorectă!' });
-        }
-
-        req.session.id_utilizator = utilizator.id_utilizator;  
-        req.session.nume_utilizator = utilizator.nume_utilizator;
-        req.session.email = utilizator.email;
-        req.session.este_moderator = utilizator.este_moderator;
-        req.session.imagine_profil = utilizator.imagine_profil;
-
-        res.json({
-            id_utilizator: utilizator.id_utilizator,
-            email: utilizator.email,
-            data_inregistrare: utilizator.data_inregistrare,
-            este_moderator: utilizator.este_moderator
-        });
-
-    } catch (err) {
-        console.error('Eroare la autentificare:', err);
-        res.status(500).json({ message: 'Eroare la server' });
-    }
-});
-
-app.post('/deconectare', (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            return res.status(500).json({ message: 'Eroare la deconectare' });
-        }
-        res.status(200).json({ message: 'Logout cu succes' });
-    });
-});
 
 app.get('/sesiune', (req, res) => {
     if (req.session.id_utilizator) {        
@@ -125,31 +88,108 @@ app.post('/inregistrare', async (req, res) => {
     }
 });
 
+app.post('/conectare', async (req, res) => {
+    const { email, parola } = req.body;
+
+    try {
+        const utilizator = await Utilizator.findOne({ where: { email: email } });
+
+        if (!utilizator || utilizator.parola !== parola) { 
+            return res.status(401).json({ message: 'Email sau parolă incorectă!' });
+        }
+
+        req.session.id_utilizator = utilizator.id_utilizator;  
+        req.session.nume_utilizator = utilizator.nume_utilizator;
+        req.session.email = utilizator.email;
+        req.session.este_moderator = utilizator.este_moderator;
+        req.session.imagine_profil = utilizator.imagine_profil;
+
+        res.json({
+            id_utilizator: utilizator.id_utilizator,
+            email: utilizator.email,
+            data_inregistrare: utilizator.data_inregistrare,
+            este_moderator: utilizator.este_moderator
+        });
+
+    } catch (err) {
+        console.error('Eroare la autentificare:', err);
+        res.status(500).json({ message: 'Eroare la server' });
+    }
+});
+
+app.post('/deconectare', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).json({ message: 'Eroare la deconectare' });
+        }
+        res.status(200).json({ message: 'Logout cu succes' });
+    });
+});
+
 app.get('/utilizatori', async (req, res) => {
     try {
         const utilizatori = await Utilizator.findAll({
-            attributes: ['id_utilizator', 'nume_utilizator', 'email', 'este_moderator'],
-            order: [['id_utilizator', 'ASC']],
-            include: [
-                {
-                    model: Postare,
-                    as: 'postari',
-                    attributes: ['id_postare']
-                },
-                {
-                    model: Comentariu,
-                    as: 'comentarii',
-                    attributes: ['id_comentariu']
-                }
-            ]
-        })
+            attributes: ['id_utilizator', 'nume_utilizator', 'imagine_profil'],
+            include: [{
+                model: Sanctiune,
+                as: 'sanctiuni', 
+                attributes: ['id_sanctiune', 'sanctiune', 'durata_sanctiune']
+            }]
+        });
+
         res.json(utilizatori);
-    }
-    catch (err) {
-        console.error('Eroare la obținerea utilizatorilor:', err);
+    } catch (err) {
+        console.error('Eroare la obținerea utilizatorilor cu sancțiuni:', err);
         res.status(500).json({ message: 'Eroare la server' });
     }
-})
+});
+
+app.delete('/utilizatori', async (req, res) => {
+    const { id_utilizator } = req.body;
+
+    try {
+        await Utilizator.destroy({ where: { id_utilizator } });
+
+        res.json({ message: 'Utilizator șters cu succes' });
+    } catch (err) {
+        console.error('Eroare la ștergerea utilizatorului:', err);
+        res.status(500).json({ message: 'Eroare la server' });
+    }
+});
+
+app.post('/sanctiuni', async (req, res) => {
+    const { id_utilizator, sanctiune, durata_sanctiune } = req.body;
+
+    try {
+        if (!id_utilizator) {
+            return res.status(400).json({ message: 'Lipsește id-ul utilizatorului' });
+        }
+
+        await Sanctiune.create({
+            sanctiune,
+            durata_sanctiune, 
+            id_utilizator
+        });
+
+        res.json({ message: 'Utilizator sancționat cu succes' });
+    } catch (err) {
+        console.error('Eroare la sancționarea utilizatorului:', err);
+        res.status(500).json({ message: 'Eroare la server' });
+    }
+});
+
+app.delete('/sanctiuni', async (req, res) => {
+    const { id_sanctiune } = req.body;
+
+    try {
+        await Sanctiune.destroy({ where: { id_sanctiune } });
+
+        res.json({ message: 'Sancțiune ștearsă cu succes' });
+    } catch (err) {
+        console.error('Eroare la ștergerea sancțiunii:', err);
+        res.status(500).json({ message: 'Eroare la server' });
+    }
+});
 
 app.get('/profil', async (req, res) => {
     if (!req.session || !req.session.id_utilizator) {

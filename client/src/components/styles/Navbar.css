@@ -68,9 +68,16 @@ nav {
     cursor: pointer;
 }
 
-.notification-img {
-    width: 28px;
-    height: 28px;
+.notificari-img {
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.sanctiuni-img {
+    width: 34px;
+    height: 34px;
     cursor: pointer;
     margin-left: 10px;
 }

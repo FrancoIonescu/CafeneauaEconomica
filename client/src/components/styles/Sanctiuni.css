@@ -1,0 +1,162 @@
+.sanctiuni {
+    margin: 50px auto; 
+    max-width: 700px; 
+    padding: 30px;
+    background-color: #F7DCB9;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); 
+}
+
+.sanctiuni h2 {
+    font-family: "Spicy Rice", serif;
+    font-style: normal;
+    color: #914F1E;
+    font-size: 30px;
+    text-shadow: 0px 2px 3px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin: 40px auto 20px auto; 
+    text-align: center;
+    width: fit-content;
+}
+
+.sanctiuni button {
+    font-family: "Poppins", sans-serif;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    background-color: #7c9a6d;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.detalii-utilizator button {
+    float: right;
+}
+
+.sanctiuni button:hover {
+    background-color: #5a754e;
+}
+
+.utilizator {
+    display: flex;
+    flex-direction: column; 
+    background: white;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #eee;
+}
+
+.informatii-utilizator {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px; 
+}
+
+.imagine-profil {
+    width: 60px; 
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 20px;
+    border: 2px solid #ddd; 
+}
+
+.detalii-utilizator {
+    flex-grow: 1;
+}
+
+.detalii-utilizator strong {
+    font-size: 18px;
+    font-weight: bold; 
+    color: #914F1E;
+}
+
+.sanctiuni-utilizator {
+    margin-top: 15px;
+    padding-left: 20px;
+    border-left: 3px solid #914F1E;
+}
+
+.sanctiuni-utilizator h3 {
+    color: #914F1E;
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+}
+
+.sanctiuni-utilizator ul {
+    list-style: none;
+}
+
+.sanctiuni-utilizator li {
+    background: #fbf3f3; 
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    border: 1px solid #914F1E;
+    color: #914F1E;
+}
+
+.sanctiuni-utilizator li p {
+    margin: 5px 0;
+}
+
+.sanctiuni-utilizator li p strong {
+    color: #914F1E;
+}
+
+.fara-sanctiuni {
+    color: #914F1E;
+    font-style: italic;
+    margin-top: 10px;
+}
+
+.formular-sanctiune {
+    color: #914F1E;
+    margin-top: 10px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.formular-sanctiune label {
+    font-weight: bold;
+}
+
+.formular-sanctiune input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
+.formular-sanctiune-butoane {
+    display: flex;
+    justify-content: center;
+}
+
+.formular-sanctiune button:first-of-type {
+    background-color: #ddd;
+    color: black;
+}
+
+.formular-sanctiune button:last-of-type {
+    background-color: #914F1E;
+    color: white;
+}
+
+.formular-sanctiune button:hover {
+    opacity: 0.8;
+}
+
+#buton-stergere-utilizator {
+    padding: 8px 10px;
+    margin-left: 469px;
+}

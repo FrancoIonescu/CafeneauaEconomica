@@ -5,7 +5,6 @@ const Apreciere = require('./apreciere');
 const Categorie = require('./categorie');
 const Notificare = require('./notificare');
 const Sanctiune = require('./sanctiune');
-const Thread = require('./thread');
 
 // Asocieri Utilizator
 Utilizator.hasMany(Postare, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'postari' });
@@ -13,7 +12,6 @@ Utilizator.hasMany(Comentariu, { foreignKey: 'id_utilizator', onDelete: 'CASCADE
 Utilizator.hasMany(Apreciere, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'aprecieri' });
 Utilizator.hasMany(Notificare, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'notificari' });
 Utilizator.hasMany(Sanctiune, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'sanctiuni' });
-Utilizator.hasMany(Thread, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'threaduri' });
 
 // Asocieri Postare
 Postare.belongsTo(Utilizator, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'utilizator'});
@@ -33,17 +31,12 @@ Apreciere.belongsTo(Comentariu, { foreignKey: 'id_comentariu', onDelete: 'CASCAD
 
 // Asocieri Categorie
 Categorie.hasMany(Postare, { foreignKey: 'id_categorie', onDelete: 'CASCADE', as: 'postari' });
-Categorie.hasMany(Thread, { foreignKey: 'id_categorie', onDelete: 'CASCADE', as: 'threaduri' });
 
 // Asocieri Notificare
 Notificare.belongsTo(Utilizator, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'utilizator' });
 
 // Asocieri Sanctiune
 Sanctiune.belongsTo(Utilizator, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'utilizator' });
-
-// Asocieri Thread
-Thread.belongsTo(Utilizator, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'utilizator' });
-Thread.belongsTo(Categorie, { foreignKey: 'id_categorie', onDelete: 'CASCADE', as: 'categorie' });
 
 module.exports = {
     Utilizator,
@@ -52,6 +45,5 @@ module.exports = {
     Apreciere,
     Categorie,
     Notificare,
-    Sanctiune,
-    Thread
+    Sanctiune
 };

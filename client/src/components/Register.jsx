@@ -57,6 +57,7 @@ const Register = () => {
                         onChange={(e) => setParola(e.target.value)}
                         required 
                     />
+                    <label htmlFor="dataNastere">Data nașterii:</label>
                     <input 
                         type="date" 
                         value={dataNastere}

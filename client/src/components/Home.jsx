@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import './styles/Home.css';
 import { useNavigate } from "react-router-dom";
-import imagineProfilDefault from "./images/profile_photo.jpg";
+import imagineProfilAnonim from "./images/profil-anonim.jpg";
 import { useAuth } from "./AuthContext";
 import MesajGlobal from "./MesajGlobal";
 
@@ -115,7 +115,7 @@ const Home = () => {
                 setComentariuNou("");
                 afisarePostari();
             } else {
-                console.error("Eroare la adăugarea comentariului:", raspuns.statusText);
+                throw new Error("Eroare la trimiterea comentariului");
             }
         } catch (err) {
             console.error("Eroare la trimiterea comentariului:", err);
@@ -136,13 +136,14 @@ const Home = () => {
             });
 
             if (raspuns.ok) {
+                setContinutDeSters(null);
                 setMesajGlobal("Postarea a fost ștearsă cu succes!");
                 afisarePostari();
             } else {
-                console.error("Eroare la ștergere postare:", raspuns.statusText);
+                throw new Error("Eroare la ștergerea postării");
             }
         } catch (err) {
-            console.error("Eroare la ștergere postare:", err);
+            console.error("Eroare la ștergerea postării:", err);
         }
     }
 
@@ -156,10 +157,11 @@ const Home = () => {
             });
 
             if (raspuns.ok) {
+                setContinutDeSters(null);
                 setMesajGlobal("Comentariul a fost șters cu succes!");
                 afisarePostari();
             } else {
-                console.error("Eroare la ștergere comentariu:", raspuns.statusText);
+                throw new Error("Eroare la ștergerea comentariului");
             }
         } catch (err) {
             console.error("Eroare la ștergere comentariu:", err);
@@ -203,7 +205,7 @@ const Home = () => {
                         <div className="postare-header">  
                             <div className="continut-autor">
                                 <img 
-                                    src={postare.utilizator.imagine_profil ? `${API_URL}/imagini/${postare.utilizator.imagine_profil}` : imagineProfilDefault}
+                                    src={postare.utilizator.imagine_profil ? `${API_URL}/imagini/${postare.utilizator.imagine_profil}` : imagineProfilAnonim}
                                     alt="Profil" 
                                     className="profil-img"
                                 />
@@ -247,7 +249,7 @@ const Home = () => {
                                             <div className="comentariu" key={comentariu.id_comentariu}>
                                                 <div className="continut-autor">
                                                     <img 
-                                                        src={comentariu.utilizator.imagine_profil ? `${API_URL}/imagini/${comentariu.utilizator.imagine_profil}` : imagineProfilDefault}
+                                                        src={comentariu.utilizator.imagine_profil ? `${API_URL}/imagini/${comentariu.utilizator.imagine_profil}` : imagineProfilAnonim}
                                                         alt="Profil" 
                                                         className="profil-img"
                                                     />

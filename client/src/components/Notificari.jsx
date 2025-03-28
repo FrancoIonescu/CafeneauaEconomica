@@ -62,7 +62,7 @@ const Notificari = () => {
   if (loading) {
     return <p>Se încarcă notificările...</p>;
   }
-  console.log(notificari)
+
   return (
     <div>
       <MesajGlobal message={mesajGlobal} clearMessage={() => setMesajGlobal("")} />
