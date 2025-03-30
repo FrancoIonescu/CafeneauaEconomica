@@ -16,7 +16,7 @@ const Utilizator = sequelize.define('Utilizator', {
     imagine_profil: { type: DataTypes.STRING, allowNull: true }
 }, {
     tableName: 'utilizatori',
-    timestamps: false 
+    timestamps: false
 });
 
 module.exports = Utilizator;

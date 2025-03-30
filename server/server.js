@@ -1,6 +1,7 @@
 const express = require('express');
 const sequelize = require('./db');
 const Sequelize = require('sequelize');
+const bcrypt = require('bcrypt');
 const Utilizator = require('./models/utilizator'); 
 const Notificare = require('./models/notificare');
 const Postare = require('./models/postare');
@@ -58,10 +59,13 @@ app.post('/inregistrare', async (req, res) => {
             return res.status(400).json({ message: 'Numele de utilizator este deja folosit!' });
         }
 
+        const salt = await bcrypt.genSalt(10);
+        const parolaHash = await bcrypt.hash(parola, salt);
+
         const utilizatorNou = await Utilizator.create({
             nume_utilizator,
             email,
-            parola, 
+            parola: parolaHash, 
             data_nastere
         });
 
@@ -94,7 +98,9 @@ app.post('/conectare', async (req, res) => {
     try {
         const utilizator = await Utilizator.findOne({ where: { email: email } });
 
-        if (!utilizator || utilizator.parola !== parola) { 
+        const parolaCorecta = await bcrypt.compare(parola, utilizator.parola);
+
+        if (!utilizator || !parolaCorecta) {
             return res.status(401).json({ message: 'Email sau parolă incorectă!' });
         }
 

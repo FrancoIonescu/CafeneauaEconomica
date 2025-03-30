@@ -8,6 +8,7 @@ const Register = () => {
     const [numeUtilizator, setNumeUtilizator] = useState("");
     const [email, setEmail] = useState("");
     const [parola, setParola] = useState("");
+    const [confirmareParola, setConfirmareParola] = useState("");
     const [dataNastere, setDataNastere] = useState("");
     const [mesajGlobal, setMesajGlobal] = useState("");
     const { user, register } = useAuth(); 
@@ -19,8 +20,12 @@ const Register = () => {
         }
     }, [user, navigate]);
     
-    const handleSubmit = async (event) => {
+    const trimiteInregistrare = async (event) => {
         event.preventDefault();
+        if (parola !== confirmareParola) {
+            setMesajGlobal("Parolele nu se potrivesc!");
+            return;
+        }
         const rezultat = await register(numeUtilizator, email, parola, dataNastere);
         if (rezultat.success) {
             navigate("/");
@@ -35,7 +40,7 @@ const Register = () => {
             <MesajGlobal message={mesajGlobal} clearMessage={() => setMesajGlobal("")} />
             <h2 className="titlu">Înregistrare</h2>
             <div className="register">
-                <form id="register-form" onSubmit={handleSubmit}>
+                <form id="register-form" onSubmit={trimiteInregistrare}>
                     <input 
                         type="text" 
                         placeholder="nume utilizator" 
@@ -56,6 +61,13 @@ const Register = () => {
                         value={parola}
                         onChange={(e) => setParola(e.target.value)}
                         required 
+                    />
+                    <input 
+                        type="password" 
+                        placeholder="confirmare parolă" 
+                        value={confirmareParola}
+                        onChange={(e) => setConfirmareParola(e.target.value)}
+                        required
                     />
                     <label htmlFor="dataNastere">Data nașterii:</label>
                     <input 

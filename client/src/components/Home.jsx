@@ -20,7 +20,7 @@ const Home = () => {
     const [mesajGlobal, setMesajGlobal] = useState("");
     const { user } = useAuth();
     const navigate = useNavigate();
-    const totalPagini = Math.ceil(totalPostari / 5);
+    const totalPagini = Math.ceil(totalPostari / 5) || 1; 
     const API_URL = import.meta.env.VITE_API_URL;
 
     const afisarePostari = useCallback(async () => {
@@ -200,105 +200,111 @@ const Home = () => {
                     placeholder="Caută postări..."
                 />
                 <button onClick={() => setCautare(inputCautare)}>Caută</button>
-                {postari.map(postare => (
-                    <div className="postare" key={postare.id_postare}>
-                        <div className="postare-header">  
-                            <div className="continut-autor">
-                                <img 
-                                    src={postare.utilizator.imagine_profil ? `${API_URL}/imagini/${postare.utilizator.imagine_profil}` : imagineProfilAnonim}
-                                    alt="Profil" 
-                                    className="profil-img"
-                                />
-                                <strong>{postare.utilizator.nume_utilizator}</strong>
-                                {user && (postare.id_utilizator === user.id_utilizator || user.este_moderator) &&(
-                                    <button className="delete-btn" onClick={() => setContinutDeSters(postare.id_postare)}>
-                                        Șterge
-                                    </button>
-                                )}
-                                {continutDeSters === postare.id_postare && (
-                                    <div className="modal">
-                                        <p>Ești sigur că vrei să ștergi această postare?</p>
-                                        <button onClick={() => setContinutDeSters(null)}>Nu</button>
-                                        <button onClick={() => stergePostare(postare.id_postare)}>Da</button>
-                                    </div>
-                                )}
-                            </div>
-                            <h2>{postare.continut}</h2>
-                            <p>Creată la: {new Date(postare.data_creare).toLocaleString()}</p>  
-                        </div>
-                        <div className="postare-actions">
-                            <button
-                                className={`like-btn ${postare.esteApreciat ? "liked" : ""}`}
-                                onClick={() => trimiteApreciere(postare.id_postare)}
-                            >
-                                {postare.esteApreciat ? "Apreciat" : "Îmi place"}
-                            </button>
-                            <button onClick={() => afisareComentarii(postare.id_postare)}>
-                                {comentariiVizibile === postare.id_postare ? "Ascunde comentarii" : "Comentarii"}
-                            </button>
-                        </div>
-                        <div className="postare-stats">
-                            <p><strong>Aprecieri:</strong> {postare.numarAprecieri}</p>
-                            <p><strong>Comentarii:</strong> {postare.comentarii ? postare.comentarii.length : 0}</p>
-                        </div>
-                        {comentariiVizibile === postare.id_postare && (
-                            <div className="comentarii-container">
-                                {postare.comentarii && postare.comentarii.length > 0 && (
-                                    <div className="comentarii">
-                                        {postare.comentarii.map(comentariu => (
-                                            <div className="comentariu" key={comentariu.id_comentariu}>
-                                                <div className="continut-autor">
-                                                    <img 
-                                                        src={comentariu.utilizator.imagine_profil ? `${API_URL}/imagini/${comentariu.utilizator.imagine_profil}` : imagineProfilAnonim}
-                                                        alt="Profil" 
-                                                        className="profil-img"
-                                                    />
-                                                    <strong>
-                                                        {comentariu.utilizator.nume_utilizator}
-                                                    </strong>
-                                                    {user && (comentariu.id_utilizator === user.id_utilizator || user.este_moderator) &&(
-                                                        <button className="delete-btn" onClick={() => setContinutDeSters(comentariu.id_comentariu)}>
-                                                            Șterge
-                                                        </button>
-                                                    )}
-                                                    {continutDeSters === comentariu.id_comentariu && (
-                                                        <div className="modal">
-                                                            <p>Ești sigur că vrei să ștergi acest comentariu?</p>
-                                                            <div className="modal-butoane">
-                                                                <button onClick={() => setContinutDeSters(null)}>Nu</button>
-                                                                <button onClick={() => stergeComentariu(comentariu.id_comentariu)}>Da</button>
-                                                            </div>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                                <p className="continut-comentariu">{comentariu.continut}</p>
-                                                <button
-                                                    className={`like-btn ${comentariu.esteApreciat ? "liked" : ""}`}
-                                                    onClick={() => trimiteApreciere(postare.id_postare, comentariu.id_comentariu)}
-                                                >
-                                                    {comentariu.esteApreciat ? "Apreciat" : "Îmi place"}
-                                                </button>
-                                                <div className="comentariu-stats">
-                                                    <p><strong>Aprecieri:</strong> {comentariu.numarAprecieri}</p>
-                                                    <p className="comentariu-data">{new Date(comentariu.data_postarii).toLocaleString()}</p>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                                <div className="adauga-comentariu">
-                                    <input
-                                        type="text"
-                                        placeholder="Adaugă un comentariu..."
-                                        value={comentariuNou}
-                                        onChange={(e) => setComentariuNou(e.target.value)}
-                                    />
-                                    <button onClick={() => trimiteComentariu(postare.id_postare)}>Trimite</button>
-                                </div>
-                            </div>
-                        )}
+                {postari.length === 0 ? (
+                    <div className="fara-postari">
+                        <p>Nu există postări disponibile.</p>
                     </div>
-                ))}
+                ) : (
+                    postari.map(postare => (
+                        <div className="postare" key={postare.id_postare}>
+                            <div className="postare-header">
+                                <div className="continut-autor">
+                                    <img
+                                        src={postare.utilizator.imagine_profil ? `${API_URL}/imagini/${postare.utilizator.imagine_profil}` : imagineProfilAnonim}
+                                        alt="Profil"
+                                        className="profil-img"
+                                    />
+                                    <strong>{postare.utilizator.nume_utilizator}</strong>
+                                    {user && (postare.id_utilizator === user.id_utilizator || user.este_moderator) && (
+                                        <button className="delete-btn" onClick={() => setContinutDeSters(postare.id_postare)}>
+                                            Șterge
+                                        </button>
+                                    )}
+                                    {continutDeSters === postare.id_postare && (
+                                        <div className="modal">
+                                            <p>Ești sigur că vrei să ștergi această postare?</p>
+                                            <button onClick={() => setContinutDeSters(null)}>Nu</button>
+                                            <button onClick={() => stergePostare(postare.id_postare)}>Da</button>
+                                        </div>
+                                    )}
+                                </div>
+                                <h2>{postare.continut}</h2>
+                                <p>Creată la: {new Date(postare.data_creare).toLocaleString()}</p>
+                            </div>
+                            <div className="postare-actions">
+                                <button
+                                    className={`like-btn ${postare.esteApreciat ? "liked" : ""}`}
+                                    onClick={() => trimiteApreciere(postare.id_postare)}
+                                >
+                                    {postare.esteApreciat ? "Apreciat" : "Îmi place"}
+                                </button>
+                                <button onClick={() => afisareComentarii(postare.id_postare)}>
+                                    {comentariiVizibile === postare.id_postare ? "Ascunde comentarii" : "Comentarii"}
+                                </button>
+                            </div>
+                            <div className="postare-stats">
+                                <p><strong>Aprecieri:</strong> {postare.numarAprecieri}</p>
+                                <p><strong>Comentarii:</strong> {postare.comentarii ? postare.comentarii.length : 0}</p>
+                            </div>
+                            {comentariiVizibile === postare.id_postare && (
+                                <div className="comentarii-container">
+                                    {postare.comentarii && postare.comentarii.length > 0 && (
+                                        <div className="comentarii">
+                                            {postare.comentarii.map(comentariu => (
+                                                <div className="comentariu" key={comentariu.id_comentariu}>
+                                                    <div className="continut-autor">
+                                                        <img
+                                                            src={comentariu.utilizator.imagine_profil ? `${API_URL}/imagini/${comentariu.utilizator.imagine_profil}` : imagineProfilAnonim}
+                                                            alt="Profil"
+                                                            className="profil-img"
+                                                        />
+                                                        <strong>
+                                                            {comentariu.utilizator.nume_utilizator}
+                                                        </strong>
+                                                        {user && (comentariu.id_utilizator === user.id_utilizator || user.este_moderator) && (
+                                                            <button className="delete-btn" onClick={() => setContinutDeSters(comentariu.id_comentariu)}>
+                                                                Șterge
+                                                            </button>
+                                                        )}
+                                                        {continutDeSters === comentariu.id_comentariu && (
+                                                            <div className="modal">
+                                                                <p>Ești sigur că vrei să ștergi acest comentariu?</p>
+                                                                <div className="modal-butoane">
+                                                                    <button onClick={() => setContinutDeSters(null)}>Nu</button>
+                                                                    <button onClick={() => stergeComentariu(comentariu.id_comentariu)}>Da</button>
+                                                                </div>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                    <p className="continut-comentariu">{comentariu.continut}</p>
+                                                    <button
+                                                        className={`like-btn ${comentariu.esteApreciat ? "liked" : ""}`}
+                                                        onClick={() => trimiteApreciere(postare.id_postare, comentariu.id_comentariu)}
+                                                    >
+                                                        {comentariu.esteApreciat ? "Apreciat" : "Îmi place"}
+                                                    </button>
+                                                    <div className="comentariu-stats">
+                                                        <p><strong>Aprecieri:</strong> {comentariu.numarAprecieri}</p>
+                                                        <p className="comentariu-data">{new Date(comentariu.data_postarii).toLocaleString()}</p>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                    <div className="adauga-comentariu">
+                                        <input
+                                            type="text"
+                                            placeholder="Adaugă un comentariu..."
+                                            value={comentariuNou}
+                                            onChange={(e) => setComentariuNou(e.target.value)}
+                                        />
+                                        <button onClick={() => trimiteComentariu(postare.id_postare)}>Trimite</button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    ))
+                )}
             </div>
             <div className="paginare">
                 <button onClick={() => setPaginaCurenta(paginaCurenta - 1)} disabled={paginaCurenta === 1}>
