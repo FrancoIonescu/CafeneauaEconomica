@@ -1,0 +1,36 @@
+.regulament {
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #F7DCB9;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    font-family: "Poppins", sans-serif;
+    text-align: center;
+}
+
+.regulament-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+    justify-content: center;
+}
+
+.regulament-list li {
+    background-color: white;
+    padding: 12px 18px;
+    border-radius: 8px;
+    color: #914F1E;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease-in-out, background-color 0.1s ease-in-out;
+}
+
+.regulament-list li:hover {
+    background-color: #F0D0A8;
+    transform: scale(1.02);
+}
