@@ -98,6 +98,11 @@
     color: #914F1E;
 }
 
+.continut-sanctiune {
+    font-weight: bold;
+    color: #5a754e;
+}
+
 .fara-sanctiuni {
     color: #914F1E;
     font-style: italic;

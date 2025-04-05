@@ -27,8 +27,8 @@ const Navbar = () => {
 
                     if (raspuns.ok) {
                         const date = await raspuns.json();
-                        setImagineProfil(date.imagine_profil);
-                        setNumeUtilizator(date.nume_utilizator);
+                        setImagineProfil(date.utilizator.imagine_profil);
+                        setNumeUtilizator(date.utilizator.nume_utilizator);
                     } else {
                         console.error("Eroare la preluarea datelor profilului.");
                     }

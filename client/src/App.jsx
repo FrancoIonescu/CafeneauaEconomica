@@ -10,6 +10,7 @@ import Profil from "./components/Profil";
 import Notificari from "./components/Notificari";
 import PostareNoua from "./components/PostareNoua";
 import Footer from "./components/Footer";
+import Despre from "./components/Despre";
 import Regulament from "./components/Regulament";
 import PaginaLipsa from "./components/PaginaLipsa";
 
@@ -26,6 +27,7 @@ const App = () => {
                     <Route path="/profil" element={<Profil />} />
                     <Route path="/notificari" element={<Notificari />} />
                     <Route path="/postare-noua" element={<PostareNoua />} />
+                    <Route path="/despre" element={<Despre />} />
                     <Route path="/regulament" element={<Regulament />} />
                     <Route path="*" element={<PaginaLipsa />} />
                 </Routes>

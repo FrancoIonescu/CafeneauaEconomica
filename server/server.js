@@ -208,11 +208,17 @@ app.get('/profil', async (req, res) => {
             attributes: ['imagine_profil', 'nume_utilizator', 'email', 'data_nastere', 'descriere', 'varsta', 'oras', 'ocupatie']
         });
 
+        const sanctiuni = await Sanctiune.findAll({
+            where: { id_utilizator: req.session.id_utilizator },
+            attributes: ['sanctiune', 'durata_sanctiune'],
+            order: [['id_sanctiune', 'DESC']]
+        });
+
         if (!utilizator) {
             return res.status(404).json({ mesaj: 'Utilizatorul nu a fost găsit' });
         }
 
-        res.json(utilizator);
+        res.json({utilizator, sanctiuni});
     } catch (error) {
         console.error('Eroare la obținerea profilului:', error);
         res.status(500).json({ mesaj: 'Eroare de server' });
