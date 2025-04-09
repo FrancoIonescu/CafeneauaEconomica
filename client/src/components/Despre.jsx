@@ -4,7 +4,7 @@ import './styles/Despre.css';
 const Despre = () => {
     return (
         <div>
-            <h1 className="titlu">Despre</h1>
+            <h2 className="titlu">Despre</h2>
             <div className="despre">
                 <p className="despre-text">
                     Acesta este un forum online dedicat discuțiilor din domeniul economic, creat pentru toți cei interesați de lumea finanțelor și a economiei.

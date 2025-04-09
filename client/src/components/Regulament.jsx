@@ -4,7 +4,7 @@ import './styles/Regulament.css';
 const Regulament = () => {
     return (
         <div>
-            <h1 className="titlu">Regulament</h1>
+            <h2 className="titlu">Regulament</h2>
             <div className="regulament">
                 <ul className="regulament-list">
                     <li><span className="icon">☕️</span> Tratează toți utilizatorii cu respect.</li>
