@@ -13,6 +13,7 @@ import Footer from "./components/Footer";
 import Despre from "./components/Despre";
 import Contact from "./components/Contact";
 import Regulament from "./components/Regulament";
+import Statistici from "./components/Statistici";
 import PaginaLipsa from "./components/PaginaLipsa";
 
 const App = () => {
@@ -31,6 +32,7 @@ const App = () => {
                     <Route path="/despre" element={<Despre />} />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/regulament" element={<Regulament />} />
+                    <Route path="/statistici" element={<Statistici />} />
                     <Route path="*" element={<PaginaLipsa />} />
                 </Routes>
                 <Footer />

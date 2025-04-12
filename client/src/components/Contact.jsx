@@ -11,15 +11,15 @@ const Contact = () => {
             <div className="contact">
                 <div className="contact-item">
                     <img src={imagineMail} alt="Email" />
-                    <a href="mailto:example@gmail.com">example@gmail.com</a>
+                    <a href="mailto:cafeneauaeconomica@gmail.com">Email</a>
                 </div>
                 <div className="contact-item">
                     <img src={imagineInstagram} alt="Instagram" />
-                    <a href="https://instagram.com/yourprofile" target="_blank" rel="noopener noreferrer">Instagram</a>
+                    <a href="https://instagram.com/profilPersonal" target="_blank" rel="noopener noreferrer">Instagram</a>
                 </div>
                 <div className="contact-item">
                     <img src={imagineFacebook} alt="Facebook" />
-                    <a href="https://facebook.com/yourprofile" target="_blank" rel="noopener noreferrer">Facebook</a>
+                    <a href="https://facebook.com/profilPersonal" target="_blank" rel="noopener noreferrer">Facebook</a>
                 </div>  
             </div>
         </div>
