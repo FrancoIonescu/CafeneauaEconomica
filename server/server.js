@@ -488,7 +488,7 @@ app.get('/statistici', async (req, res) => {
           order: [[Sequelize.literal('numar_postari'), 'DESC']]
         });
 
-        const topUtilizatori = await Utilizator.findAll({
+        const topUtilizatoriAprecieri = await Utilizator.findAll({
             attributes: [
                 'id_utilizator',
                 'nume_utilizator',
@@ -513,7 +513,21 @@ app.get('/statistici', async (req, res) => {
             limit: 10
         });
 
-        const topPostari = await Postare.findAll({
+        const topUtilizatoriPostari = await Utilizator.findAll({
+            attributes: [
+                'id_utilizator',
+                'nume_utilizator',
+                [sequelize.literal(`(
+                    SELECT COUNT(*) 
+                    FROM postari p 
+                    WHERE p.id_utilizator = Utilizator.id_utilizator
+                )`), 'total_postari']
+            ],
+            order: [[sequelize.literal('total_postari'), 'DESC']],
+            limit: 10
+        });
+
+        const topPostariAprecieri = await Postare.findAll({
             attributes: [
                 'id_postare',
                 'continut',
@@ -527,12 +541,7 @@ app.get('/statistici', async (req, res) => {
                     SELECT nume_utilizator 
                     FROM utilizatori u 
                     WHERE u.id_utilizator = Postare.id_utilizator
-                )`), 'autor_nume'],
-                [sequelize.literal(`(
-                    SELECT COUNT(*) 
-                    FROM comentarii c 
-                    WHERE c.id_postare = Postare.id_postare
-                )`), 'numar_comentarii']
+                )`), 'autor_nume']
             ],
             include: [
                 {
@@ -544,8 +553,35 @@ app.get('/statistici', async (req, res) => {
             order: [[sequelize.literal('numar_aprecieri'), 'DESC']],
             limit: 10
         });
+
+        const topPostariComentarii = await Postare.findAll({
+            attributes: [
+                'id_postare',
+                'continut',
+                'data_creare',
+                [sequelize.literal(`(
+                    SELECT COUNT(*) 
+                    FROM comentarii c 
+                    WHERE c.id_postare = Postare.id_postare
+                )`), 'numar_comentarii'],
+                [sequelize.literal(`(
+                    SELECT nume_utilizator 
+                    FROM utilizatori u 
+                    WHERE u.id_utilizator = Postare.id_utilizator
+                )`), 'autor_nume']
+            ],
+            include: [
+                {
+                    model: Categorie,
+                    as: 'categorie',
+                    attributes: ['nume_categorie']
+                }
+            ],
+            order: [[sequelize.literal('numar_comentarii'), 'DESC']],
+            limit: 10
+        });
     
-        res.json({numarPostari, numarComentarii, numarAprecieri, numarUtilizatori, postariPeCategorii, topUtilizatori, topPostari});
+        res.json({numarPostari, numarComentarii, numarAprecieri, numarUtilizatori, postariPeCategorii, topUtilizatoriAprecieri, topUtilizatoriPostari, topPostariAprecieri, topPostariComentarii});
       } catch (err) {
         console.error("Eroare la /statistici:", err);
         res.status(500).json({ error: "A apărut o eroare la generarea statisticilor." });

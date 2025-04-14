@@ -62,29 +62,27 @@ const Statistici = () => {
         ]
     };
 
-    const top10Utilizatori = {
-        labels: statistici.topUtilizatori.map(user => user.nume_utilizator),
+    const top10UtilizatoriAprecieri = {
+        labels: statistici.topUtilizatoriAprecieri.map(user => user.nume_utilizator),
         datasets: [
             {
                 label: "Top 10 utilizatori (aprecieri primite)",
-                data: statistici.topUtilizatori.map(user => user.total_aprecieri),
+                data: statistici.topUtilizatoriAprecieri.map(user => user.total_aprecieri),
                 backgroundColor: "#4e73df"
             }
         ]
     };
 
-    const top10Postari = {
-        labels: statistici.topPostari.map(post => `Postare #${post.id_postare}`),
+    const top10UtilizatoriPostari = {
+        labels: statistici.topUtilizatoriPostari.map(user => user.nume_utilizator),  
         datasets: [
             {
-                label: "Top 10 postări (aprecieri primite)",
-                data: statistici.topPostari.map(post => post.numar_aprecieri),
-                backgroundColor: [
-                    "#4e73df", "#1cc88a", "#36b9cc", "#f6c23e", "#e74a3b", "#9b59b6", "#ff6347", "#48C9B0", "#F39C12", "#2980B9"
-                ]
+                label: "Top 10 utilizatori (postări)",
+                data: statistici.topUtilizatoriPostari.map(user => user.total_postari),
+                backgroundColor: "#1cc88a"
             }
         ]
-    };
+    }
 
     return (
         <div>
@@ -102,17 +100,17 @@ const Statistici = () => {
                 </div>
                 
                 <div className="grafic">
-                    <h3>Top 10 Utilizatori</h3>
-                    <Bar data={top10Utilizatori} options={{ responsive: true }} />
+                    <h3>Top 10 Utilizatori - Aprecieri</h3>
+                    <Bar data={top10UtilizatoriAprecieri} options={{ responsive: true }} />
                 </div>
                 
                 <div className="grafic">
-                    <h3>Top 10 Postări</h3>
-                    <Bar data={top10Postari} options={{ responsive: true }} />
+                    <h3>Top 10 Utilizatori - Postări</h3>
+                    <Bar data={top10UtilizatoriPostari} options={{ responsive: true }} />
                 </div>
                 
                 <div className="grafic">
-                    <h3>Detalii Postări Populare</h3>
+                    <h3>Detalii Postări Populare - Aprecieri</h3>
                     <table className="postari-table">
                         <thead>
                             <tr>
@@ -123,11 +121,39 @@ const Statistici = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {statistici.topPostari.map(post => (
+                            {statistici.topPostariAprecieri.map(post => (
                                 <tr key={post.id_postare}>
                                     <td>{post.id_postare}</td>
                                     <td>{post.autor_nume}</td>
                                     <td>{post.numar_aprecieri}</td>
+                                    <td className="continut-cell">
+                                        {post.continut.length > 50 
+                                            ? `${post.continut.substring(0, 50)}...` 
+                                            : post.continut}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div className="grafic">
+                    <h3>Detalii Postări Populare - Comentarii</h3>
+                    <table className="postari-table">
+                        <thead>
+                            <tr>
+                                <th>ID Postare</th>
+                                <th>Autor</th>
+                                <th>Comentarii</th>
+                                <th>Conținut</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {statistici.topPostariComentarii.map(post => (
+                                <tr key={post.id_postare}>
+                                    <td>{post.id_postare}</td>
+                                    <td>{post.autor_nume}</td>
+                                    <td>{post.numar_comentarii}</td>
                                     <td className="continut-cell">
                                         {post.continut.length > 50 
                                             ? `${post.continut.substring(0, 50)}...` 

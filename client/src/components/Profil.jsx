@@ -171,7 +171,7 @@ const Profil = () => {
                         <p><strong>Vârsta:</strong> {varsta}</p>
                         <p><strong>Oraș:</strong> {oras}</p>
                         <p><strong>Ocupație:</strong> {ocupatie}</p>
-                        <p><strong>Sanctiuni:</strong></p>
+                        <p><strong>Sancțiuni:</strong></p>
                         <ul className="lista-sanctiuni">
                             {sanctiuni.length > 0 ? (
                                 sanctiuni.map((sanctiune, index) => (

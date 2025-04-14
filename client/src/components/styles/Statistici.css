@@ -12,7 +12,8 @@
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.grafic:last-child { 
+.grafic:nth-last-child(1),
+.grafic:nth-last-child(2) {
     grid-column: span 2;
 }
 
