@@ -21,11 +21,11 @@ const Login = () => {
         event.preventDefault();
         
         const rezultat = await login(email, parola);
+
         if (rezultat.success) {
             navigate("/");
             window.location.reload();
         } else {
-            console.log(rezultat)
             setMesajGlobal(rezultat.message || "Autentificare eșuată! Verifică datele introduse.");
         }
     };

@@ -1,6 +1,6 @@
 .home {
-    width: 900px;
-    margin: 0 auto;
+    width: 800px;
+    margin-left: 300px;
     padding: 20px;
     margin-top: 100px;
 }
@@ -72,7 +72,7 @@
 }
 
 .postari-feed input {
-    width: 640px;
+    width: 550px;
     padding: 8px;
     font-size: 16px;
     border: 1px solid #ddd;
@@ -129,6 +129,51 @@
 .postari-feed button {
     padding: 8px 12px;
     font-size: 14px;
+}
+
+.stiri-feed {
+    font-family: "Poppins", sans-serif;
+    font-weight: 100;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 360px;
+    height: 100vh;
+    padding-top: 90px;
+}
+  
+.stiri-feed h2 {
+    font-family: "Spicy Rice", serif;
+    color: #914F1E;
+    margin-bottom: 10px;
+    margin-left: 80px;
+}
+  
+.stiri-feed ul {
+    list-style: none;
+}
+  
+.stiri-feed li {
+    font-weight: bold;
+    color: #5a754e;
+    background-color: #F7DCB9;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 0 20px 10px 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+}
+
+.stiri-feed li strong {
+    color: #914F1E;
+}
+
+.stiri-feed a {
+    color: #5a754e;
+}
+
+.stiri-feed a:hover {
+    color: #914F1E;
 }
 
 .delete-btn {

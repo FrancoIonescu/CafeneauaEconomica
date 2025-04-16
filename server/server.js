@@ -9,6 +9,7 @@ const Sanctiune = require('./models/sanctiune');
 const Categorie = require('./models/categorie');
 const Apreciere = require('./models/apreciere');
 const Comentariu = require('./models/comentariu');
+const Stire = require('./models/stire');
 const Asocieri = require('./models/asocieri')
 const session = require('express-session'); 
 const cors = require('cors');
@@ -59,7 +60,11 @@ app.post('/inregistrare', async (req, res) => {
             return res.status(400).json({ message: 'Numele de utilizator este deja folosit!' });
         }
 
-        const salt = await bcrypt.genSalt(10);
+        if (parola.length < 8) {
+            return res.status(400).json({ message: 'Parola trebuie să aibă cel puțin 8 caractere!' });
+        }
+
+        const salt = await bcrypt.genSalt(12);
         const parolaHash = await bcrypt.hash(parola, salt);
 
         const utilizatorNou = await Utilizator.create({
@@ -92,25 +97,44 @@ app.post('/inregistrare', async (req, res) => {
     }
 });
 
+const incercariAutentificare = new Map();
+const LIMITA_INCERCARI = 5;
+const TIMP_BLOCARE_MS = 30 * 60 * 1000; 
+
 app.post('/conectare', async (req, res) => {
     const { email, parola } = req.body;
+    const adresaIP = req.ip; 
+    
+    const incercari = incercariAutentificare.get(adresaIP) || { count: 0, ultimaIncercare: null };
+
+    const acum = Date.now();
+    if (incercari.count >= LIMITA_INCERCARI && (acum - incercari.ultimaIncercare) < TIMP_BLOCARE_MS) {
+        const timpRamas = Math.ceil((TIMP_BLOCARE_MS - (acum - incercari.ultimaIncercare)) / 60000);
+        return res.status(429).json({ message: `Prea multe încercări. Reîncearcă peste ${timpRamas} minute.` });
+    }
 
     try {
-        const utilizator = await Utilizator.findOne({ where: { email: email } });
+        const utilizator = await Utilizator.findOne({ where: { email } });
+
+        if (!utilizator) {
+            throw new Error("Email sau parolă incorectă!");
+        }
 
         const parolaCorecta = await bcrypt.compare(parola, utilizator.parola);
 
-        if (!utilizator || !parolaCorecta) {
-            return res.status(401).json({ message: 'Email sau parolă incorectă!' });
+        if (!parolaCorecta) {
+            throw new Error("Email sau parolă incorectă!");
         }
 
-        req.session.id_utilizator = utilizator.id_utilizator;  
+        incercariAutentificare.delete(adresaIP);
+
+        req.session.id_utilizator = utilizator.id_utilizator;
         req.session.nume_utilizator = utilizator.nume_utilizator;
         req.session.email = utilizator.email;
         req.session.este_moderator = utilizator.este_moderator;
         req.session.imagine_profil = utilizator.imagine_profil;
 
-        res.json({
+        return res.json({
             id_utilizator: utilizator.id_utilizator,
             email: utilizator.email,
             data_inregistrare: utilizator.data_inregistrare,
@@ -118,8 +142,14 @@ app.post('/conectare', async (req, res) => {
         });
 
     } catch (err) {
+        const contor = {
+            count: incercari.count + 1,
+            ultimaIncercare: Date.now()
+        };
+        incercariAutentificare.set(adresaIP, contor); 
+
         console.error('Eroare la autentificare:', err);
-        res.status(500).json({ message: 'Eroare la server' });
+        return res.status(401).json({ message: 'Email sau parolă incorectă!' });
     }
 });
 
@@ -585,6 +615,23 @@ app.get('/statistici', async (req, res) => {
       } catch (err) {
         console.error("Eroare la /statistici:", err);
         res.status(500).json({ error: "A apărut o eroare la generarea statisticilor." });
+    }
+});
+
+app.get('/stiri', async (req, res) => {
+    try {
+        const stiri = await Stire.findAll({
+            order: [['data_creare', 'DESC']],
+            include: {
+                model: Utilizator,
+                as: 'utilizator',
+                attributes: ['nume_utilizator', 'imagine_profil']
+            }
+        });
+        res.json(stiri);
+    } catch (err) {
+        console.error('Eroare la obținerea știrilor:', err);
+        res.status(500).json({ message: 'Eroare la server' });
     }
 });
 

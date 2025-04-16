@@ -7,6 +7,7 @@ import MesajGlobal from "./MesajGlobal";
 
 const Home = () => {
     const [postari, setPostari] = useState([]);
+    const [stiri, setStiri] = useState([]);
     const [totalPostari, setTotalPostari] = useState(0);
     const [paginaCurenta, setPaginaCurenta] = useState(1);
     const [categorii, setCategorii] = useState([]);
@@ -37,6 +38,24 @@ const Home = () => {
         }
     }, [paginaCurenta, categorieSelectata, cautare]);
 
+    const afisareStiri = async () => {
+        try {
+          const raspuns = await fetch(`${API_URL}/stiri`, {
+            method: "GET",
+            credentials: "include",
+          });
+    
+          if (raspuns.ok) {
+            const date = await raspuns.json();
+            setStiri(date);
+          } else {
+            console.error("Eroare la preluarea știrilor.");
+          }
+        } catch (error) {
+          console.error("Eroare la conectarea cu serverul:", error);
+        }
+    };
+
     useEffect(() => {
         const afisareCategorii = async () => {
             try {
@@ -49,6 +68,7 @@ const Home = () => {
         };
         afisareCategorii();
         afisarePostari();
+        afisareStiri();
     }, [afisarePostari, user]);
 
     const vizibilitateBaraCategorii = () => {
@@ -190,7 +210,7 @@ const Home = () => {
                 </div>
             )}
             <div className="postari-feed">
-                <button onClick={() => navigate("/postare-noua")}>
+                <button onClick={() => navigate("/postare")}>
                     Postare nouă
                 </button>
                 <input 
@@ -305,6 +325,21 @@ const Home = () => {
                         </div>
                     ))
                 )}
+            </div>
+            <div className="stiri-feed">
+                <h2>Buletin Informativ</h2>
+                <ul>
+                    {stiri.slice(0, 3).map(stire => (
+                    <li
+                    key={stire.id_stire}
+                    onClick={() => navigate("/stiri")}
+                >
+                    <strong>{stire.titlu}</strong>
+                    <p>{stire.continut.slice(0, 70)}...</p>
+                    <a href="">Du-te la știre</a>
+                </li>
+                    ))}
+                </ul>
             </div>
             <div className="paginare">
                 <button onClick={() => setPaginaCurenta(paginaCurenta - 1)} disabled={paginaCurenta === 1}>

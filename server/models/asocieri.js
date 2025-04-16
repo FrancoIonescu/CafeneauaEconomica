@@ -5,6 +5,7 @@ const Apreciere = require('./apreciere');
 const Categorie = require('./categorie');
 const Notificare = require('./notificare');
 const Sanctiune = require('./sanctiune');
+const Stire = require('./stire');
 
 // Asocieri Utilizator
 Utilizator.hasMany(Postare, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'postari' });
@@ -12,6 +13,7 @@ Utilizator.hasMany(Comentariu, { foreignKey: 'id_utilizator', onDelete: 'CASCADE
 Utilizator.hasMany(Apreciere, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'aprecieri' });
 Utilizator.hasMany(Notificare, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'notificari' });
 Utilizator.hasMany(Sanctiune, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'sanctiuni' });
+Utilizator.hasMany(Stire, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'stiri' });
 
 // Asocieri Postare
 Postare.belongsTo(Utilizator, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'utilizator'});
@@ -37,6 +39,9 @@ Notificare.belongsTo(Utilizator, { foreignKey: 'id_utilizator', onDelete: 'CASCA
 
 // Asocieri Sanctiune
 Sanctiune.belongsTo(Utilizator, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'utilizator' });
+
+// Asocieri Stire
+Stire.belongsTo(Utilizator, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'utilizator' });
 
 module.exports = {
     Utilizator,
