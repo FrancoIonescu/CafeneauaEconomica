@@ -432,14 +432,14 @@ app.post('/aprecieri', async (req, res) => {
 
         if (apreciereExistenta) {
             await apreciereExistenta.destroy();
-            return res.json({ message: "Apreciere eliminată", liked: false });
+            return res.json({ mesaj: "Apreciere eliminată cu succes!", liked: false });
         } else {
             await Apreciere.create({ 
                 id_utilizator, 
                 id_postare: id_postare || null, 
                 id_comentariu: id_comentariu || null, 
             });
-            return res.json({ message: "Apreciere adăugată", liked: true });
+            return res.json({ mesaj: "Apreciere adăugată cu succes!", liked: true });
         }
     } catch (err) {
         console.error("Eroare la gestionarea aprecierii:", err);

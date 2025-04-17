@@ -98,7 +98,7 @@ const Home = () => {
             });
 
             const data = await raspuns.json();
-
+            setMesajGlobal(data.mesaj);
             afisarePostari();
         } catch (err) {
             console.error("Eroare la apreciere:", err);
@@ -331,14 +331,14 @@ const Home = () => {
                 <ul>
                     {stiri.slice(0, 3).map(stire => (
                     <li
-                    key={stire.id_stire}
-                    onClick={() => navigate("/stiri")}
-                >
-                    <strong>{stire.titlu}</strong>
-                    <p>{stire.continut.slice(0, 70)}...</p>
-                    <a href="">Du-te la știre</a>
-                </li>
+                        key={stire.id_stire}
+                        onClick={() => navigate("/stiri")}
+                    >
+                        <strong>{stire.titlu}</strong>
+                        <p>{stire.continut.slice(0, 70)}...</p>
+                    </li>
                     ))}
+                    <a href="/stiri">Du-te la știre</a>
                 </ul>
             </div>
             <div className="paginare">
