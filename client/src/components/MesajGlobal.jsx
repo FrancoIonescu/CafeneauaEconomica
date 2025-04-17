@@ -1,20 +1,20 @@
 import React, { useEffect } from "react";
 import "./styles/MesajGlobal.css";
 
-const MesajGlobal = ({ message, clearMessage }) => {
+const MesajGlobal = ({ mesaj, stergeMesaj }) => {
     useEffect(() => {
-        if (message) {
+        if (mesaj) {
             const timer = setTimeout(() => {
-                clearMessage(); 
+                stergeMesaj(); 
             }, 3000);
 
             return () => clearTimeout(timer); 
         }
-    }, [message]);
+    }, [mesaj]);
 
-    if (!message) return null;
+    if (!mesaj) return null;
 
-    return <div className="chenar-mesaj">{message}</div>;
+    return <div className="chenar-mesaj">{mesaj}</div>;
 };
 
 export default MesajGlobal;

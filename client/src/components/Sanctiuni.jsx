@@ -120,7 +120,7 @@ const Sanctiuni = () => {
 
     return (
         <div>
-            <MesajGlobal message={mesajGlobal} clearMessage={() => setMesajGlobal("")} />
+            <MesajGlobal mesaj={mesajGlobal} stergeMesaj={() => setMesajGlobal("")} />
             <h2 className="titlu">Sanctiuni</h2>
             <div className="sanctiuni">
                 <ul>

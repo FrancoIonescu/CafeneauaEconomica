@@ -27,17 +27,17 @@ const Register = () => {
             return;
         }
         const rezultat = await register(numeUtilizator, email, parola, dataNastere);
-        if (rezultat.success) {
+        if (rezultat.succes) {
             navigate("/");
             window.location.reload();
         } else {
-            setMesajGlobal(rezultat.message || "Înregistrare eșuată! Verifică datele introduse.");
+            setMesajGlobal(rezultat.mesaj || "Înregistrare eșuată! Verifică datele introduse.");
         }
     };
 
     return (
         <div>
-            <MesajGlobal message={mesajGlobal} clearMessage={() => setMesajGlobal("")} />
+            <MesajGlobal mesaj={mesajGlobal} stergeMesaj={() => setMesajGlobal("")} />
             <h2 className="titlu">Înregistrare</h2>
             <div className="register">
                 <form id="register-form" onSubmit={trimiteInregistrare}>
@@ -57,7 +57,7 @@ const Register = () => {
                     />
                     <input 
                         type="password" 
-                        placeholder="parolă" 
+                        placeholder="parolă (minim 10 caractere)" 
                         value={parola}
                         onChange={(e) => setParola(e.target.value)}
                         required 

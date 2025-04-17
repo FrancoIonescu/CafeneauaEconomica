@@ -65,7 +65,7 @@ const Notificari = () => {
 
   return (
     <div>
-      <MesajGlobal message={mesajGlobal} clearMessage={() => setMesajGlobal("")} />
+      <MesajGlobal mesaj={mesajGlobal} stergeMesaj={() => setMesajGlobal("")} />
       <h2 className="titlu">Notificari</h2>
         <div className="notificari">
             {notificari.length > 0 ? (

@@ -101,7 +101,7 @@ const Profil = () => {
 
     return (
         <div>
-            <GlobalMessage message={globalMessage} clearMessage={() => setGlobalMessage("")} />
+            <GlobalMessage mesaj={globalMessage} stergeMesaj={() => setGlobalMessage("")} />
             <h2 className="titlu">Profil utilizator</h2>
             <div className="profil">
                 <img

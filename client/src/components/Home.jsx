@@ -190,7 +190,7 @@ const Home = () => {
 
     return (
         <div className="home">
-            <MesajGlobal message={mesajGlobal} clearMessage={() => setMesajGlobal("")} />
+            <MesajGlobal mesaj={mesajGlobal} stergeMesaj={() => setMesajGlobal("")} />
             <h1>Postări</h1>
             <div className="bara-categorii">
                 <button onClick={vizibilitateBaraCategorii}>

@@ -44,10 +44,10 @@ export const AuthProvider = ({ children }) => {
             }
 
             setUser(data);
-            return { success: true };
+            return { succes: true };
         } catch (error) {
             console.error("Eroare la înregistrare:", error);
-            return { success: false, message: error.message };
+            return { succes: false, mesaj: error.message };
         }
     };    
 
@@ -67,10 +67,10 @@ export const AuthProvider = ({ children }) => {
             }
 
             setUser(data);
-            return { success: true };
+            return { succes: true };
         } catch (error) {
             console.error("Eroare la autentificare:", error);
-            return { success: false, message: error.message};
+            return { succes: false, mesaj: error.message};
         }
     };
 

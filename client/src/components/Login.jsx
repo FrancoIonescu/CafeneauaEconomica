@@ -22,17 +22,17 @@ const Login = () => {
         
         const rezultat = await login(email, parola);
 
-        if (rezultat.success) {
+        if (rezultat.succes) {
             navigate("/");
             window.location.reload();
         } else {
-            setMesajGlobal(rezultat.message || "Autentificare eșuată! Verifică datele introduse.");
+            setMesajGlobal(rezultat.mesaj || "Autentificare eșuată! Verifică datele introduse.");
         }
     };
 
     return (
         <div>
-            <MesajGlobal message={mesajGlobal} clearMessage={() => setMesajGlobal("")} />
+            <MesajGlobal mesaj={mesajGlobal} stergeMesaj={() => setMesajGlobal("")} />
             <h2 className="titlu">Conectare</h2>
             <div className="login">
                 <form id="login-form" onSubmit={handleSubmit}>

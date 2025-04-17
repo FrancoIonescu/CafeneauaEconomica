@@ -60,8 +60,8 @@ app.post('/inregistrare', async (req, res) => {
             return res.status(400).json({ message: 'Numele de utilizator este deja folosit!' });
         }
 
-        if (parola.length < 8) {
-            return res.status(400).json({ message: 'Parola trebuie să aibă cel puțin 8 caractere!' });
+        if (parola.length < 10) {
+            return res.status(400).json({ message: 'Parola trebuie să aibă cel puțin 10 caractere!' });
         }
 
         const salt = await bcrypt.genSalt(12);
