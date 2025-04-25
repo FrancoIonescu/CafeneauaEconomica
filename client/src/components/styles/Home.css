@@ -62,6 +62,10 @@
     width: 100%;
 }
 
+.categorie.selectata {
+    background-color: #744424;
+}
+
 .categorie:hover {
     background-color: #744424;
 }
@@ -118,6 +122,7 @@
     margin-left: 10px;
     font-size: 1.1em;
     color: #CABA9C;
+    cursor: pointer;
 }
 
 .postare-header h2 {

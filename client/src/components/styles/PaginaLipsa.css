@@ -5,23 +5,22 @@
     justify-content: center;
     padding-top: 200px;
     text-align: center;
-    background-color: #B5C18E;
 }
 
 .pagina-lipsa h1 {
     font-size: 3em;
-    color: #914F1E;
+    color: #F7DCB9;
     margin-bottom: 20px;
 }
 
 .pagina-lipsa p {
     font-size: 1.2em;
-    color: #914F1E;
+    color: #F7DCB9;
     margin-bottom: 15px;
 }
 
 .pagina-lipsa a {
-    color: #914F1E;
+    color: #F7DCB9;
     text-decoration: none;
     font-weight: bold;
 }

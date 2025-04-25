@@ -20,7 +20,7 @@ const Navbar = () => {
         if (user) {
             const obtineDateProfil = async () => {
                 try {
-                    const raspuns = await fetch(`${API_URL}/profil`, {
+                    const raspuns = await fetch(`${API_URL}/profil/${user.id_utilizator}`, {
                         method: "GET",
                         credentials: "include",
                     });
@@ -61,7 +61,7 @@ const Navbar = () => {
     }, [user]);
 
     const navigheazaProfil = () => {
-        navigate("/profil");
+        navigate(`/profil/${user.id_utilizator}`);
     };
 
     const navigheazaNotificari = () => {

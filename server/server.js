@@ -227,28 +227,45 @@ app.delete('/sanctiuni', async (req, res) => {
     }
 });
 
-app.get('/profil', async (req, res) => {
+app.get('/profil/:id', async (req, res) => {
+    const idCautat = req.params.id;
+    const esteProfilPropriu = parseInt(idCautat) === req.session.id_utilizator;
+
     if (!req.session || !req.session.id_utilizator) {
         return res.status(401).json({ mesaj: 'Utilizator neautentificat' });
     }
 
     try {
         const utilizator = await Utilizator.findOne({
-            where: { id_utilizator: req.session.id_utilizator },
-            attributes: ['imagine_profil', 'nume_utilizator', 'email', 'data_nastere', 'descriere', 'varsta', 'oras', 'ocupatie']
-        });
-
-        const sanctiuni = await Sanctiune.findAll({
-            where: { id_utilizator: req.session.id_utilizator },
-            attributes: ['sanctiune', 'durata_sanctiune'],
-            order: [['id_sanctiune', 'DESC']]
+            where: { id_utilizator: idCautat },
+            attributes: [
+                'id_utilizator',
+                'imagine_profil',
+                'nume_utilizator',
+                'email',
+                'data_nastere',
+                'descriere',
+                'varsta',
+                'oras',
+                'ocupatie'
+            ]
         });
 
         if (!utilizator) {
             return res.status(404).json({ mesaj: 'Utilizatorul nu a fost găsit' });
         }
 
-        res.json({utilizator, sanctiuni});
+        let sanctiuni = [];
+
+        if (esteProfilPropriu) {
+            sanctiuni = await Sanctiune.findAll({
+                where: { id_utilizator: idCautat },
+                attributes: ['sanctiune', 'durata_sanctiune'],
+                order: [['id_sanctiune', 'DESC']]
+            });
+        }
+
+        res.json({ utilizator, sanctiuni, esteProfilPropriu });
     } catch (error) {
         console.error('Eroare la obținerea profilului:', error);
         res.status(500).json({ mesaj: 'Eroare de server' });
@@ -625,7 +642,7 @@ app.get('/stiri', async (req, res) => {
             include: {
                 model: Utilizator,
                 as: 'utilizator',
-                attributes: ['nume_utilizator', 'imagine_profil']
+                attributes: ['id_utilizator', 'nume_utilizator', 'imagine_profil']
             }
         });
         res.json(stiri);

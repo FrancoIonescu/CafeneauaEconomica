@@ -51,10 +51,13 @@ const Stiri = () => {
                 <img
                     src={stire.utilizator.imagine_profil ? `${API_URL}/imagini/${stire.utilizator.imagine_profil}` : imagineProfilAnonim}
                     alt="Profil"
+                    onClick={() => navigate(`/profil/${stire.utilizator.id_utilizator}`)}
                     className="imagine-profil-stire"
                 />
                 <div className="info-utilizator">
-                  <strong>{stire.utilizator?.nume_utilizator}</strong>
+                  <strong onClick={() => navigate(`/profil/${stire.utilizator.id_utilizator}`)}>
+                    {stire.utilizator?.nume_utilizator}
+                  </strong>
                   <span>{new Date(stire.data_creare).toLocaleString()}</span>
                 </div>
               </div>

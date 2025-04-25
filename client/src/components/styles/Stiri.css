@@ -60,11 +60,16 @@
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #CABA9C;
+  cursor: pointer;
 }
 
 .info-utilizator {
   color: #F7DCB9;
   font-size: 1.1rem;
+}
+
+.info-utilizator strong {
+  cursor: pointer;
 }
 
 .info-utilizator span {

@@ -52,7 +52,6 @@
     font-weight: bold;
     color: #F7DCB9;
     margin-top: 10px;
-    text-align: left;
 }
 
 .profil textarea {
@@ -118,6 +117,7 @@
 .lista-sanctiuni li {
     padding: 16px 20px;
     transition: background-color 0.3s ease;
+    border-bottom: 1px solid #CABA9C;
 }
 
 .lista-sanctiuni li:last-child {
@@ -137,7 +137,7 @@
 }
 
 .lista-sanctiuni strong {
-    color: #CABA9C;
+    color: #F7DCB9;
 }
 
 .lipsa-sanctiuni {

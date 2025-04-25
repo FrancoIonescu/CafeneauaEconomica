@@ -192,7 +192,7 @@ const Home = () => {
                 {categorii.map(categorie => (
                     <div 
                         key={categorie.id_categorie} 
-                        className='categorie'
+                        className={`categorie ${categorieSelectata === categorie.id_categorie ? "selectata" : ""}`}
                         onClick={() => selecteazaCategorie(categorie.id_categorie)}>
                         {categorie.nume_categorie}
                     </div>
@@ -223,9 +223,12 @@ const Home = () => {
                                     <img
                                         src={postare.utilizator.imagine_profil ? `${API_URL}/imagini/${postare.utilizator.imagine_profil}` : imagineProfilAnonim}
                                         alt="Profil"
+                                        onClick={() => navigate(`/profil/${postare.id_utilizator}`)}
                                         className="profil-img"
                                     />
-                                    <strong>{postare.utilizator.nume_utilizator}</strong>
+                                    <strong onClick={() => navigate(`/profil/${postare.id_utilizator}`)}>
+                                        {postare.utilizator.nume_utilizator}
+                                    </strong>
                                     {user && (postare.id_utilizator === user.id_utilizator || user.este_moderator) && (
                                         <button className="delete-btn" onClick={() => setContinutDeSters(postare.id_postare)}>
                                             Șterge
@@ -267,9 +270,10 @@ const Home = () => {
                                                         <img
                                                             src={comentariu.utilizator.imagine_profil ? `${API_URL}/imagini/${comentariu.utilizator.imagine_profil}` : imagineProfilAnonim}
                                                             alt="Profil"
+                                                            onClick={() => navigate(`/profil/${comentariu.id_utilizator}`)}
                                                             className="profil-img"
                                                         />
-                                                        <strong>
+                                                        <strong onClick={() => navigate(`/profil/${comentariu.id_utilizator}`)}>
                                                             {comentariu.utilizator.nume_utilizator}
                                                         </strong>
                                                         {user && (comentariu.id_utilizator === user.id_utilizator || user.este_moderator) && (
