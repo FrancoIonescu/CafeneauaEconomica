@@ -15,7 +15,6 @@ const Home = () => {
     const [inputCautare, setInputCautare] = useState("");
     const [cautare, setCautare] = useState("");
     const [comentariiVizibile, setComentariiVizibile] = useState(null);
-    const [baraVizibila, setBaraVizibila] = useState(true);
     const [comentariuNou, setComentariuNou] = useState("");
     const [continutDeSters, setContinutDeSters] = useState("");
     const [mesajGlobal, setMesajGlobal] = useState("");
@@ -70,10 +69,6 @@ const Home = () => {
         afisarePostari();
         afisareStiri();
     }, [afisarePostari, user]);
-
-    const vizibilitateBaraCategorii = () => {
-        setBaraVizibila(!baraVizibila);
-    };
 
     const selecteazaCategorie = (id_categorie) => {
         setCategorieSelectata(id_categorie);
@@ -192,34 +187,30 @@ const Home = () => {
         <div className="home">
             <MesajGlobal mesaj={mesajGlobal} stergeMesaj={() => setMesajGlobal("")} />
             <h1>Postări</h1>
-            <div className="bara-categorii">
-                <button onClick={vizibilitateBaraCategorii}>
-                    {baraVizibila ? 'Ascunde categorii' : 'Afișează Categorii'}
-                </button>
+            <div className="categorii-feed">
+                <h2>Categorii</h2>
+                {categorii.map(categorie => (
+                    <div 
+                        key={categorie.id_categorie} 
+                        className='categorie'
+                        onClick={() => selecteazaCategorie(categorie.id_categorie)}>
+                        {categorie.nume_categorie}
+                    </div>
+                ))}
             </div>
-            {baraVizibila && (
-                <div className="lista-categorii">
-                    {categorii.map(categorie => (
-                        <div 
-                            key={categorie.id_categorie} 
-                            className={`categorie ${categorie.id_categorie === categorieSelectata ? 'selectata' : ''}`}
-                            onClick={() => selecteazaCategorie(categorie.id_categorie)}>
-                            {categorie.nume_categorie}
-                        </div>
-                    ))}
-                </div>
-            )}
             <div className="postari-feed">
-                <button onClick={() => navigate("/postare")}>
-                    Postare nouă
-                </button>
-                <input 
-                    type="text" 
-                    value={inputCautare} 
-                    onChange={(e) => setInputCautare(e.target.value)} 
-                    placeholder="Caută postări..."
-                />
-                <button onClick={() => setCautare(inputCautare)}>Caută</button>
+                <div className="postari-header">
+                    <button onClick={() => navigate("/postare")}>
+                        Postare nouă
+                    </button>
+                    <input 
+                        type="text" 
+                        value={inputCautare} 
+                        onChange={(e) => setInputCautare(e.target.value)} 
+                        placeholder="Caută postări..."
+                    />
+                    <button onClick={() => setCautare(inputCautare)}>Caută</button>
+                </div>
                 {postari.length === 0 ? (
                     <div className="fara-postari">
                         <p>Nu există postări disponibile.</p>
@@ -335,10 +326,10 @@ const Home = () => {
                         onClick={() => navigate("/stiri")}
                     >
                         <strong>{stire.titlu}</strong>
-                        <p>{stire.continut.slice(0, 70)}...</p>
+                        <p>{stire.continut.slice(0, 102)}...</p>
                     </li>
                     ))}
-                    <a href="/stiri">Du-te la știre</a>
+                    <a href="/stiri">Du-te la știri</a>
                 </ul>
             </div>
             <div className="paginare">

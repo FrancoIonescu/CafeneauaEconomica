@@ -13,8 +13,8 @@
 }
 
 .stire {
-  color: #5a754e;
-  background-color: #F7DCB9;
+  color: #CABA9C;
+  background-color: #102820;
   border-radius: 12px;
   padding: 15px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
@@ -31,16 +31,20 @@
   line-height: 1.6;
 }
 
+.continut:hover {
+  color: #F7DCB9;
+}
+
 .titlu-stire {
   font-size: 1.5rem;
   margin-bottom: 12px;
-  color: #914F1E;
+  color: #CABA9C;
   text-transform: uppercase;
   transition: color 0.3s ease;
 }
 
 .titlu-stire:hover {
-  color: #b5651d; 
+  color: #F7DCB9;
 }
 
 .header-stire {
@@ -55,18 +59,16 @@
   height: 50px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #914F1E; 
+  border: 2px solid #CABA9C;
 }
 
 .info-utilizator {
-  color: #5a754e;
-  font-size: 1rem;
+  color: #F7DCB9;
+  font-size: 1.1rem;
 }
 
 .info-utilizator span {
   display: block;
-  font-size: 0.9rem;
-  color: #5a754e;
 }
 
 .imagine-stire {
@@ -83,7 +85,7 @@
 }
 
 .mesaj-fara-stiri {
-  color: #5a754e;
+  color: #CABA9C;
   background-color: #F7DCB9;
   border-radius: 12px;
   padding: 20px;

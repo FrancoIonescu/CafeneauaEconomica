@@ -168,8 +168,8 @@ const Sanctiuni = () => {
                                             <div className="continut-sanctiune">
                                                 <p><strong>Sancțiune:</strong> <span>{sanctiune.sanctiune}</span></p>
                                                 <p><strong>Durată:</strong> <span>{new Date(sanctiune.durata_sanctiune).toLocaleDateString()}</span></p>
+                                                <button onClick={() => setContinutDeSters(sanctiune.id_sanctiune)}>Șterge</button>
                                             </div>
-                                            <button onClick={() => setContinutDeSters(sanctiune.id_sanctiune)}>Șterge</button>
                                             {continutDeSters === sanctiune.id_sanctiune && (
                                                 <div className="modal">
                                                     <p>Ești sigur că vrei să ștergi această sancțiune?</p>

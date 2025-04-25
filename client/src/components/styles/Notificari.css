@@ -2,7 +2,7 @@
     max-width: 600px;
     margin: 20px auto;
     padding: 20px;
-    background-color: #F7DCB9;
+    background-color: #102820;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     font-family: "Poppins", sans-serif;
@@ -10,8 +10,8 @@
 }
 
 .titlu {
-    font-style: normal;
-    color: #914F1E;
+    font-family: "Poetsen One", sans-serif;
+    color: #F7DCB9;
     font-size: 30px;
     text-shadow: 0px 2px 3px rgba(0, 0, 0, 0.2);
     font-weight: bold;
@@ -25,11 +25,11 @@
 }
 
 .notificari li {
-    background-color: white;
+    background-color: #4D2D18;
     padding: 12px 18px;
     margin-bottom: 12px;
     border-radius: 8px;
-    color: #914F1E;
+    color: #F7DCB9;
     font-weight: bold;
     display: grid; 
     grid-template-columns: 1fr auto; 
@@ -40,35 +40,13 @@
 }
 
 .notificari li:hover {
-    background-color: #F0D0A8;
+    background-color: #744424;
     transform: scale(1.02);
-}
-
-.notificari li .icon {
-    font-size: 18px;
-    color: #914F1E;
-    flex-shrink: 0;
-    grid-column: 1;
 }
 
 .notificari li .content {
     grid-column: 1; 
     text-align: left;
-}
-
-.notificari li .content p {
-    margin: 0;
-    font-size: 14px;
-    font-weight: 500;
-    color: #333;
-}
-
-.notificari li .content span {
-    display: block;
-    font-size: 12px;
-    color: #914F1E;
-    font-weight: bold;
-    margin-top: 4px;
 }
 
 .notificari p {
@@ -84,8 +62,8 @@
     border: none;
     border-radius: 4px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    background-color: #7c9a6d;
-    color: white;
+    background-color: #8A6240;
+    color: #CABA9C;
     font-size: 14px;
     cursor: pointer;
     grid-column: 2; 
@@ -93,5 +71,5 @@
 }
 
 .notificari li .notificare-button:hover {
-    background-color: #5a754e;
+    background-color: #744424;
 }

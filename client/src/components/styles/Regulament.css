@@ -2,7 +2,7 @@
     max-width: 700px;
     margin: 20px auto;
     padding: 20px;
-    background-color: #F7DCB9;
+    background-color: #102820;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     font-family: "Poppins", sans-serif;
@@ -18,10 +18,10 @@
 }
 
 .regulament-list li {
-    background-color: white;
+    background-color: #4D2D18;
     padding: 12px 18px;
     border-radius: 8px;
-    color: #914F1E;
+    color: #F7DCB9;
     font-weight: bold;
     display: flex;
     align-items: center;
@@ -31,6 +31,6 @@
 }
 
 .regulament-list li:hover {
-    background-color: #F0D0A8;
+    background-color: #744424;
     transform: scale(1.02);
 }

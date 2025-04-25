@@ -6,8 +6,8 @@
 }
 
 .titlu {
-    font-style: normal;
-    color: #914F1E;
+    font-family: "Poetsen One", sans-serif;
+    color: #F7DCB9;
     font-size: 30px;
     text-shadow: 0px 2px 3px rgba(0, 0, 0, 0.2);
     font-weight: bold;
@@ -18,7 +18,7 @@
 }
 
 #postare-form {
-    background: #F7DCB9;
+    background: #102820;
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
@@ -50,8 +50,8 @@
 }
 
 #postare-form button {
-    background-color: #7c9a6d;
-    color: white;
+    background-color: #4D2D18;
+    color: #CABA9C;
     border: none;
     padding: 12px;
     border-radius: 5px;
@@ -62,5 +62,5 @@
 }
 
 #postare-form button:hover {
-    background-color: #5a754e;
+    background-color: #8A6240;
 }

@@ -185,7 +185,9 @@ const Profil = () => {
                                 </li>
                                 ))
                             ) : (
-                                <li>Nu există sancțiuni.</li>
+                                <div className="lipsa-sanctiuni">
+                                    <li>Nu există sancțiuni.</li>
+                                </div>
                             )}
                         </ul>
                         <button onClick={() => setEditareProfil(true)}>Editează profilul</button>

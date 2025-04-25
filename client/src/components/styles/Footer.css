@@ -1,5 +1,5 @@
 .footer {
-    background-color: #F7DCB9;
+    background-color: #4D2D18;
     padding: 20px 0;
     text-align: center;
     width: 100%;
@@ -15,7 +15,7 @@
 
 .footer-content a {
     text-decoration: none;
-    color: #333;
+    color: #CABA9C;
     font-size: 14px;
 }
 
@@ -26,5 +26,5 @@
 .copyright {
     margin-top: 10px;
     font-size: 12px;
-    color: #777;
+    color: #CABA9C;
 }
