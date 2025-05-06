@@ -33,11 +33,11 @@ const Profil = () => {
 
         const obtineDateProfil = async () => {
             try {
-                const raspuns = await fetch(`${API_URL}/profil/${id}}`, {
+                const raspuns = await fetch(`${API_URL}/profil/${id}`, {
                     method: "GET",
                     credentials: "include",
                 });
-
+                
                 if (raspuns.ok) {
                     const date = await raspuns.json();
                     setImagineProfil(date.utilizator.imagine_profil);

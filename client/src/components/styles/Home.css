@@ -70,21 +70,6 @@
     background-color: #744424;
 }
 
-.bara-categorii button {
-    background-color: #8A6240;
-    left: 65px;
-    position: fixed;
-    top: 185px;
-    border: none;
-    padding: 5px 10px;
-    font-size: 15px;
-    z-index: 1;
-}
-
-.bara-categorii button:hover {
-    background-color: #4D2D18;
-}
-
 .postari-feed input {
     width: 550px;
     padding: 8px;
@@ -365,3 +350,22 @@
     color: #102820;
     cursor: not-allowed;
 }
+
+@media (max-width: 1500px) {
+    .categorii-feed {
+        width: 200px;
+    }
+
+    .postari-feed {
+        width: 550px;
+        margin-left: 200px;
+    }
+
+    .postari-feed input {
+        width: 340px;
+    }
+    .stiri-feed {
+        display: none;
+    }
+  }
+  
