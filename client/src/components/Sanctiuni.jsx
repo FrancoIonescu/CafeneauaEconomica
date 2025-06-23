@@ -19,7 +19,7 @@ const Sanctiuni = () => {
     const API_URL = import.meta.env.VITE_API_URL;
 
     useEffect(() => {
-        if (!loading && !user) {
+        if (!loading && !user || !loading && !user.este_moderator) {
             navigate("/login");
             return;
         }
@@ -161,7 +161,7 @@ const Sanctiuni = () => {
                             )}
                             {utilizator.sanctiuni && utilizator.sanctiuni.length > 0 && (
                                 <div className="sanctiuni-utilizator">
-                                    <h3>Sancțiuni:</h3>
+                                    <h4>Sancțiuni:</h4>
                                     <ul>
                                     {utilizator.sanctiuni.map((sanctiune) => (
                                         <li key={sanctiune.id_sanctiune}>

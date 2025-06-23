@@ -7,7 +7,6 @@ const Notificare = require('./notificare');
 const Sanctiune = require('./sanctiune');
 const Stire = require('./stire');
 
-// Asocieri Utilizator
 Utilizator.hasMany(Postare, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'postari' });
 Utilizator.hasMany(Comentariu, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'comentarii' });
 Utilizator.hasMany(Apreciere, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'aprecieri' });
@@ -15,32 +14,25 @@ Utilizator.hasMany(Notificare, { foreignKey: 'id_utilizator', onDelete: 'CASCADE
 Utilizator.hasMany(Sanctiune, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'sanctiuni' });
 Utilizator.hasMany(Stire, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'stiri' });
 
-// Asocieri Postare
 Postare.belongsTo(Utilizator, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'utilizator'});
 Postare.belongsTo(Categorie, { foreignKey: 'id_categorie', onDelete: 'CASCADE', as: 'categorie'});
 Postare.hasMany(Comentariu, { foreignKey: 'id_postare', onDelete: 'CASCADE', as: 'comentarii' });
 Postare.hasMany(Apreciere, { foreignKey: 'id_postare', onDelete: 'CASCADE', as: 'aprecieri' });
 
-// Asocieri Comentariu
 Comentariu.belongsTo(Utilizator, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'utilizator' });
 Comentariu.belongsTo(Postare, { foreignKey: 'id_postare', onDelete: 'CASCADE', as: 'postare' });
 Comentariu.hasMany(Apreciere, { foreignKey: 'id_comentariu', onDelete: 'CASCADE', as: 'aprecieri' });
 
-// Asocieri Apreciere
 Apreciere.belongsTo(Utilizator, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'utilizator' });
 Apreciere.belongsTo(Postare, { foreignKey: 'id_postare', onDelete: 'CASCADE', allowNull: true, as: 'postare' });
 Apreciere.belongsTo(Comentariu, { foreignKey: 'id_comentariu', onDelete: 'CASCADE', allowNull: true, as: 'comentariu' });
 
-// Asocieri Categorie
 Categorie.hasMany(Postare, { foreignKey: 'id_categorie', onDelete: 'CASCADE', as: 'postari' });
 
-// Asocieri Notificare
 Notificare.belongsTo(Utilizator, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'utilizator' });
 
-// Asocieri Sanctiune
 Sanctiune.belongsTo(Utilizator, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'utilizator' });
 
-// Asocieri Stire
 Stire.belongsTo(Utilizator, { foreignKey: 'id_utilizator', onDelete: 'CASCADE', as: 'utilizator' });
 
 module.exports = {
